@@ -1,8 +1,91 @@
-export default function Home() {
+import PlayStoreButton from "@/components/PlayStoreButton";
+import AppPreview from "@/components/AppPreview";
+import FaqList from "@/components/FaqList";
+import JsonLd from "@/components/JsonLd";
+import { WHAT_IS_LORE, STEPS, CATEGORIES } from "@/lib/site";
+import { FAQS } from "@/lib/faqs";
+import { mobileAppSchema, faqSchema } from "@/lib/schema";
+
+export const metadata = {
+  title: { absolute: "Lore: Viral Star Bano – Turn Your Photo into a Viral Video" },
+  description:
+    "Lore is an Android app that turns your photo into a share-ready video. Pick a template, add your photo and post it on WhatsApp status. Get it on Google Play.",
+  alternates: { canonical: "/" },
+  openGraph: {
+    title: "Lore: Viral Star Bano – Turn Your Photo into a Viral Video",
+    description: "Pick a template, add your photo, and share a video where you are the star.",
+    url: "/",
+  },
+};
+
+// FAQ #1 ("What is Lore?") is already answered at the top, so the home FAQ starts from #2.
+const homeFaqs = FAQS.slice(1);
+
+export default function HomePage() {
   return (
-    <main>
-      <h1>Lore</h1>
-      <p>Setup working.</p>
-    </main>
+    <>
+      <JsonLd data={mobileAppSchema()} />
+      <JsonLd data={faqSchema(homeFaqs)} />
+
+      {/* Hero: H1 + 40–60 word answer + Play button (all in the first screen on mobile) */}
+      <section className="section section-cream">
+        <div className="wrap">
+          <h1>Turn your photo into a viral video</h1>
+          <h2 style={{ fontSize: "1.1rem" }}>What is Lore?</h2>
+          <p className="lead">{WHAT_IS_LORE}</p>
+          <PlayStoreButton />
+        </div>
+      </section>
+
+      {/* App preview */}
+      <section className="section">
+        <div className="wrap">
+          <h2>See the app</h2>
+          <AppPreview />
+        </div>
+      </section>
+
+      {/* How it works */}
+      <section className="section section-cream">
+        <div className="wrap">
+          <h2>How Lore works</h2>
+          <ol className="steps grid grid-4">
+            {STEPS.map((s) => (
+              <li key={s.title} className="card">
+                <h3>{s.title}</h3>
+                <p>{s.text}</p>
+              </li>
+            ))}
+          </ol>
+          <a href="/how-it-works">Read the full guide →</a>
+        </div>
+      </section>
+
+      {/* Categories */}
+      <section className="section">
+        <div className="wrap">
+          <h2>Templates for every mood</h2>
+          <p className="lead">Lore groups its templates into categories, so you can find the right video fast.</p>
+          <div className="grid grid-2">
+            {CATEGORIES.slice(0, 6).map((c) => (
+              <div key={c.name} className="card">
+                <h3>{c.name}</h3>
+                <p>{c.text}</p>
+              </div>
+            ))}
+          </div>
+          <p style={{ marginTop: 16 }}><a href="/templates">See all categories →</a></p>
+        </div>
+      </section>
+
+      {/* FAQ (5+ questions, matches FAQPage schema) */}
+      <section className="section section-cream">
+        <div className="wrap">
+          <h2>Questions about Lore</h2>
+          <FaqList faqs={homeFaqs} />
+          <p style={{ marginTop: 16 }}><a href="/faq">All questions →</a></p>
+        </div>
+      </section>
+    </>
   );
 }

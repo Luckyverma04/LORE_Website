@@ -1,0 +1,32 @@
+import PlayStoreButton from "@/components/PlayStoreButton";
+import { CATEGORIES } from "@/lib/site";
+
+export const metadata = {
+  title: "Lore Templates – Family, Friends, Devotion & More",
+  description:
+    "Browse Lore's template categories: Family, Friends, Relationships, Devotion, Patriotic, Dance, Vlog and animated art styles. Pick one and add your photo.",
+  alternates: { canonical: "/templates" },
+};
+
+export default function TemplatesPage() {
+  return (
+    <section className="section">
+      <div className="wrap">
+        <h1>Lore templates</h1>
+        <p className="lead">
+          A template is a ready-made video scene. Pick one, add your photo, and Lore makes the video with you in it.
+          These are the categories in the app.
+        </p>
+        <div className="grid grid-2" style={{ marginBottom: 24 }}>
+          {CATEGORIES.map((c) => (
+            <div key={c.name} className="card">
+              <h2 style={{ fontSize: "1.2rem" }}>{c.name}</h2>
+              <p>{c.text}</p>
+            </div>
+          ))}
+        </div>
+        <PlayStoreButton label="See all templates in the app" />
+      </div>
+    </section>
+  );
+}
