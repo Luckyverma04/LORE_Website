@@ -1,3 +1,4 @@
+import Link from "next/link";
 import PlayStoreButton from "./PlayStoreButton";
 import { NAV, APP_NAME } from "@/lib/site";
 
@@ -15,9 +16,9 @@ export default function Footer() {
       <footer className="footer">
         <div className="wrap">
           <ul className="nav">
-            <li><a href="/">Home</a></li>
+            <li><Link prefetch={false} href="/">Home</Link></li>
             {NAV.map((item) => (
-              <li key={item.href}><a href={item.href}>{item.label}</a></li>
+              <li key={item.href}><Link prefetch={false} href={item.href}>{item.label}</Link></li>
             ))}
           </ul>
           <p>© 2026 Lore. {APP_NAME} is available on Google Play for Android.</p>

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import PlayStoreButton from "@/components/PlayStoreButton";
 import AppPreview from "@/components/AppPreview";
 import FaqList from "@/components/FaqList";
@@ -57,7 +58,7 @@ export default function HomePage() {
               </li>
             ))}
           </ol>
-          <a href="/how-it-works">Read the full guide →</a>
+          <Link prefetch={false} href="/how-it-works">Read the full guide →</Link>
         </div>
       </section>
 
@@ -74,7 +75,7 @@ export default function HomePage() {
               </div>
             ))}
           </div>
-          <p style={{ marginTop: 16 }}><a href="/templates">See all categories →</a></p>
+          <p style={{ marginTop: 16 }}><Link prefetch={false} href="/templates">See all categories →</Link></p>
         </div>
       </section>
 
@@ -83,7 +84,7 @@ export default function HomePage() {
         <div className="wrap">
           <h2>Questions about Lore</h2>
           <FaqList faqs={homeFaqs} />
-          <p style={{ marginTop: 16 }}><a href="/faq">All questions →</a></p>
+          <p style={{ marginTop: 16 }}><Link prefetch={false} href="/faq">All questions →</Link></p>
         </div>
       </section>
     </>
