@@ -117,3 +117,9 @@ img { max-width: 100%; height: auto; }
   .marquee-track { animation: none; }
   .marquee { overflow-x: auto; }
 }
+
+/* Hero with 3D phone on desktop (the 3D part is not loaded on phones) */
+.hero-grid { display: grid; gap: 24px; align-items: center; }
+@media (min-width: 1024px) { .hero-grid { grid-template-columns: 1.05fr .95fr; min-height: 520px; } }
+.hero3d { position: relative; width: 100%; height: 520px; }
+.hero3d-canvas { position: absolute; inset: 0; }

@@ -5,6 +5,7 @@ import FaqList from "@/components/FaqList";
 import JsonLd from "@/components/JsonLd";
 import CategoryCard from "@/components/CategoryCard";
 import Marquee from "@/components/Marquee";
+import Hero3DSlot from "@/components/Hero3DSlot";
 import { WHAT_IS_LORE, STEPS, CATEGORIES } from "@/lib/site";
 import { FAQS } from "@/lib/faqs";
 import { mobileAppSchema, faqSchema } from "@/lib/schema";
@@ -32,11 +33,15 @@ export default function HomePage() {
 
       {/* Hero: H1 + 40–60 word answer + Play button (all in the first screen on mobile) */}
       <section className="section section-cream">
-        <div className="wrap">
-          <h1>Turn your photo into a viral video</h1>
-          <h2 style={{ fontSize: "1.1rem" }}>What is Lore?</h2>
-          <p className="lead">{WHAT_IS_LORE}</p>
-          <PlayStoreButton />
+        <div className="wrap hero-grid">
+          <div>
+            <h1>Turn your photo into a viral video</h1>
+            <h2 style={{ fontSize: "1.1rem" }}>What is Lore?</h2>
+            <p className="lead">{WHAT_IS_LORE}</p>
+            <PlayStoreButton />
+          </div>
+          {/* 3D phone: desktop only, loaded after the page is ready (components/Hero3D.js) */}
+          <Hero3DSlot />
         </div>
       </section>
 
