@@ -1,16 +1,11 @@
 import Image from "next/image";
+import { SCREENSHOTS } from "@/lib/site";
 
-// "Short preview of the app" (PDF). Real app screenshots go in public/screens/.
-// Save them as WebP, about 540x900, under 80 KB each. Crop out any personal profile photo.
-const SCREENS = [
-  { src: "/screens/screen-1.webp", alt: "Lore app home screen showing Girl, Guy and Friends templates" },
-  { src: "/screens/screen-2.webp", alt: "Lore app templates in Family, Relationships and Vlog categories" },
-];
-
+// "Short preview of the app" (PDF). To change screenshots, edit SCREENSHOTS in lib/site.js.
 export default function AppPreview() {
   return (
     <div className="preview" aria-label="Lore app screenshots">
-      {SCREENS.map((s) => (
+      {SCREENSHOTS.map((s) => (
         <Image
           key={s.src}
           src={s.src}

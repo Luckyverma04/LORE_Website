@@ -3,6 +3,8 @@ import PlayStoreButton from "@/components/PlayStoreButton";
 import AppPreview from "@/components/AppPreview";
 import FaqList from "@/components/FaqList";
 import JsonLd from "@/components/JsonLd";
+import CategoryCard from "@/components/CategoryCard";
+import Marquee from "@/components/Marquee";
 import { WHAT_IS_LORE, STEPS, CATEGORIES } from "@/lib/site";
 import { FAQS } from "@/lib/faqs";
 import { mobileAppSchema, faqSchema } from "@/lib/schema";
@@ -38,6 +40,15 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Real style examples from the app, scrolling right to left (images from public/showcase) */}
+      <section className="section">
+        <div className="wrap">
+          <h2>Ek photo, kai andaaz</h2>
+          <p className="lead">Real examples from the Lore app: the same person as a 70s Polaroid, as Low Poly Art, or as a Desi Superwoman.</p>
+        </div>
+        <Marquee />
+      </section>
+
       {/* App preview */}
       <section className="section">
         <div className="wrap">
@@ -62,20 +73,19 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Categories */}
+      {/* Categories: a scrollable row of template cards, like the app home screen */}
       <section className="section">
         <div className="wrap">
-          <h2>Templates for every mood</h2>
+          <div className="row-head">
+            <h2>Templates for every mood</h2>
+            <Link prefetch={false} href="/templates">See all</Link>
+          </div>
           <p className="lead">Lore groups its templates into categories, so you can find the right video fast.</p>
-          <div className="grid grid-2">
-            {CATEGORIES.slice(0, 6).map((c) => (
-              <div key={c.name} className="card">
-                <h3>{c.name}</h3>
-                <p>{c.text}</p>
-              </div>
+          <div className="cat-row">
+            {CATEGORIES.filter((c) => c.image).map((c) => (
+              <CategoryCard key={c.name} category={c} />
             ))}
           </div>
-          <p style={{ marginTop: 16 }}><Link prefetch={false} href="/templates">See all categories →</Link></p>
         </div>
       </section>
 

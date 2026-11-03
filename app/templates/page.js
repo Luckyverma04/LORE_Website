@@ -1,4 +1,5 @@
 import PlayStoreButton from "@/components/PlayStoreButton";
+import CategoryCard from "@/components/CategoryCard";
 import { CATEGORIES } from "@/lib/site";
 
 export const metadata = {
@@ -17,12 +18,9 @@ export default function TemplatesPage() {
           A template is a ready-made video scene. Pick one, add your photo, and Lore makes the video with you in it.
           These are the categories in the app.
         </p>
-        <div className="grid grid-2" style={{ marginBottom: 24 }}>
+        <div className="cat-grid">
           {CATEGORIES.map((c) => (
-            <div key={c.name} className="card">
-              <h2 style={{ fontSize: "1.2rem" }}>{c.name}</h2>
-              <p>{c.text}</p>
-            </div>
+            <CategoryCard key={c.name} category={c} HeadingTag="h2" />
           ))}
         </div>
         <PlayStoreButton label="See all templates in the app" />
