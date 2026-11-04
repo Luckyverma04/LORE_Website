@@ -28,7 +28,7 @@ export default function StepFlow3D({ onFail }) {
       return;
     }
     const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5)); // lighter on the GPU/CPU
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.domElement.style.cssText = "position:absolute;inset:0;width:100%;height:100%;display:block";
     el.prepend(renderer.domElement);
@@ -134,7 +134,13 @@ export default function StepFlow3D({ onFail }) {
 
     let raf = 0, visible = true;
     const clock = new THREE.Clock();
-    const loop = () => { draw(clock.getElapsedTime()); raf = requestAnimationFrame(loop); };
+    let last = 0;
+    // ~30 frames per second is smooth for slow motion and uses about half the CPU of 60.
+    const loop = () => {
+      const t = clock.getElapsedTime();
+      if (t - last >= 1 / 30) { last = t; draw(t); }
+      raf = requestAnimationFrame(loop);
+    };
     const start = () => { if (!still && !raf && visible && !document.hidden) raf = requestAnimationFrame(loop); };
     const stop = () => { cancelAnimationFrame(raf); raf = 0; };
     const ro = new ResizeObserver(resize);
