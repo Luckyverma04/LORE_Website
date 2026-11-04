@@ -126,7 +126,7 @@ export default function StepFlow3D({ onFail }) {
       renderer.setSize(w, h, false);
       camera.aspect = w / h;
       const tn = Math.tan((camera.fov * Math.PI) / 360);
-      camera.position.set(0.9, 0.3, Math.max(11, 3.6 / (camera.aspect * tn)));
+      camera.position.set(0.9, 0.3, Math.max(9.2, 3.6 / (camera.aspect * tn)));
       camera.lookAt(0.9, 0, 0);
       camera.updateProjectionMatrix();
       draw(clock.getElapsedTime());

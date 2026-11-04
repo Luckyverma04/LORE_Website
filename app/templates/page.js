@@ -16,13 +16,15 @@ export default function TemplatesPage() {
   return (
     <section className="section">
       <div className="wrap">
-        <div className="hero-grid">
+        <div className="hero-grid hero-big">
           <div>
+            <p className="eyebrow">Pick a scene · Add your photo</p>
             <h1>Lore templates</h1>
             <p className="lead">
               A template is a ready-made video scene. Pick one, add your photo, and Lore makes the video with you in it.
               These are the categories in the app.
             </p>
+            <PlayStoreButton />
           </div>
           {/* 3D ring of template categories (desktop only) */}
           <Hero3DSlot model="carousel" />

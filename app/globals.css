@@ -144,3 +144,13 @@ img { max-width: 100%; height: auto; }
 .hero-visual:has(canvas) .hero3d-static-phone { display: none; }
 .hero3d-static-phone { width: 210px; background: var(--ink); padding: 8px; border-radius: 30px; box-shadow: 0 18px 40px -18px rgb(110 31 26 / .45); transform: rotate(-4deg); }
 .hero3d-static-phone img { display: block; width: 100%; height: auto; aspect-ratio: 540 / 900; border-radius: 22px; }
+
+/* How it works + Templates hero: bigger text and 3D so the first screen feels full */
+.eyebrow { color: var(--brand); font-weight: 800; font-size: .95rem; letter-spacing: .02em; margin-bottom: 10px; }
+.section:has(.hero-big) { padding-top: 24px; }
+@media (min-width: 1024px) {
+  .hero-big { grid-template-columns: 1fr 1fr; min-height: 540px; gap: 40px; }
+  .hero-big h1 { font-size: clamp(2.8rem, 4.4vw, 3.8rem); margin-bottom: 18px; }
+  .hero-big .lead { font-size: 1.25rem; max-width: 34ch; margin-bottom: 28px; }
+  .hero-big .hero3d, .hero-big .flow3d { height: 540px; }
+}

@@ -47,7 +47,7 @@ export default function Carousel3D({ onFail }) {
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
-    camera.position.set(0, 1.3, 12);
+    camera.position.set(0, 1.2, 8.6);
     camera.lookAt(0, 0, 0);
 
     const ring = new THREE.Group();
@@ -56,7 +56,7 @@ export default function Carousel3D({ onFail }) {
     const loader = new THREE.TextureLoader();
     const cardGeo = new THREE.PlaneGeometry(1.25, 1.77);
     const labelGeo = new THREE.PlaneGeometry(1.25, 0.31);
-    const R = 2.5;
+    const R = 2.2;
     const items = ITEMS.map((item, i) => {
       const a = (i / ITEMS.length) * Math.PI * 2;
       const t = loader.load(item.image, () => draw(clock.getElapsedTime()));

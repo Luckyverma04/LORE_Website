@@ -15,12 +15,14 @@ export default function HowItWorksPage() {
   return (
     <section className="section">
       <div className="wrap">
-        <div className="hero-grid">
+        <div className="hero-grid hero-big">
           <div>
+            <p className="eyebrow">4 simple steps · No editing</p>
             <h1>How Lore works</h1>
             <p className="lead">
               Lore turns your photo into a video you can share. You do not need to edit anything. Here are the four steps.
             </p>
+            <PlayStoreButton />
           </div>
           {/* 3D step flow (desktop only): template cards hop through the 4 steps */}
           <Hero3DSlot model="flow" />
