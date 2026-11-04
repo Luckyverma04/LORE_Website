@@ -154,3 +154,21 @@ img { max-width: 100%; height: auto; }
   .hero-big .lead { font-size: 1.25rem; max-width: 34ch; margin-bottom: 28px; }
   .hero-big .hero3d, .hero-big .flow3d { height: 540px; }
 }
+
+/* Home: chat-bubble hook and Hinglish steps */
+.bubble {
+  display: inline-block; margin: 0 0 14px; padding: 8px 14px;
+  background: #fff; border: 1px solid var(--line); border-radius: 18px 18px 18px 4px;
+  font-weight: 700; color: var(--ink); box-shadow: 0 6px 16px -10px rgb(0 0 0 / .25);
+}
+.kaise { list-style: none; padding: 0; margin: 8px 0 16px; display: grid; gap: 12px; }
+.kaise li { display: flex; align-items: center; gap: 14px; font-size: 1.15rem; font-weight: 700; }
+.kaise span {
+  flex: 0 0 auto; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 14px;
+  background: var(--brand); color: #fff; font-weight: 900; font-size: 1.2rem;
+}
+@media (min-width: 900px) {
+  .kaise { grid-template-columns: repeat(4, 1fr); }
+  .kaise li { flex-direction: column; align-items: flex-start; gap: 10px; }
+}
+.kaise-note { color: var(--muted); }

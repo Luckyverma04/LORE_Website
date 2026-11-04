@@ -18,7 +18,6 @@ export default function TemplatesPage() {
       <div className="wrap">
         <div className="hero-grid hero-big">
           <div>
-            <p className="eyebrow">Pick a scene · Add your photo</p>
             <h1>Lore templates</h1>
             <p className="lead">
               A template is a ready-made video scene. Pick one, add your photo, and Lore makes the video with you in it.

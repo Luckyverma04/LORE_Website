@@ -6,7 +6,7 @@ import JsonLd from "@/components/JsonLd";
 import CategoryCard from "@/components/CategoryCard";
 import Marquee from "@/components/Marquee";
 import HeroVisual from "@/components/HeroVisual";
-import { WHAT_IS_LORE, STEPS, CATEGORIES } from "@/lib/site";
+import { WHAT_IS_LORE, CATEGORIES } from "@/lib/site";
 import { FAQS } from "@/lib/faqs";
 import { mobileAppSchema, faqSchema } from "@/lib/schema";
 import { OG_DEFAULTS } from "@/lib/og";
@@ -37,7 +37,8 @@ export default function HomePage() {
       <section className="section section-cream">
         <div className="wrap hero-grid">
           <div>
-            <h1>Turn your photo into a viral video</h1>
+            <p className="bubble">Roz wahi purana photo status? 🙄</p>
+            <h1>Apni photo se viral video banao</h1>
             <h2 style={{ fontSize: "1.1rem" }}>What is Lore?</h2>
             <p className="lead">{WHAT_IS_LORE}</p>
             <PlayStoreButton />
@@ -51,7 +52,7 @@ export default function HomePage() {
       <section className="section">
         <div className="wrap">
           <h2>Ek photo, kai andaaz</h2>
-          <p className="lead">Real examples from the Lore app: the same person as a 70s Polaroid, as Low Poly Art, or as a Desi Superwoman.</p>
+          <p className="lead">Lore app ke asli examples: ek hi photo se 70s Polaroid, Low Poly Art ya Desi Superwoman.</p>
         </div>
         <Marquee />
       </section>
@@ -59,24 +60,22 @@ export default function HomePage() {
       {/* App preview */}
       <section className="section">
         <div className="wrap">
-          <h2>See the app</h2>
+          <h2>App andar se aisi dikhti hai</h2>
           <AppPreview />
         </div>
       </section>
 
-      {/* How it works */}
+      {/* Kaise banta hai: the 4 steps in the listing's own Hinglish (full guide on /how-it-works) */}
       <section className="section section-cream">
         <div className="wrap">
-          <h2>How Lore works</h2>
-          <ol className="steps grid grid-4">
-            {STEPS.map((s) => (
-              <li key={s.title} className="card">
-                <h3>{s.title}</h3>
-                <p>{s.text}</p>
-              </li>
-            ))}
+          <h2>Kaise banta hai?</h2>
+          <ol className="kaise">
+            <li><span>1</span>Lore install karo</li>
+            <li><span>2</span>Template chuno</li>
+            <li><span>3</span>Apni photo daalo</li>
+            <li><span>4</span>WhatsApp status pe share karo</li>
           </ol>
-          <Link prefetch={false} href="/how-it-works">Read the full guide →</Link>
+          <p className="kaise-note">Na editing, na lamba process. <Link prefetch={false} href="/how-it-works">Poora guide dekho →</Link></p>
         </div>
       </section>
 
@@ -84,10 +83,10 @@ export default function HomePage() {
       <section className="section">
         <div className="wrap">
           <div className="row-head">
-            <h2>Templates for every mood</h2>
+            <h2>Har mood ka template</h2>
             <Link prefetch={false} href="/templates">See all</Link>
           </div>
-          <p className="lead">Lore groups its templates into categories, so you can find the right video fast.</p>
+          <p className="lead">Family, dosti, pyaar, bhakti, desh-bhakti: app mein har category ka alag template hai.</p>
           <div className="cat-row">
             {CATEGORIES.filter((c) => c.image).map((c) => (
               <CategoryCard key={c.name} category={c} />
@@ -99,7 +98,7 @@ export default function HomePage() {
       {/* FAQ (5+ questions, matches FAQPage schema) */}
       <section className="section section-cream">
         <div className="wrap">
-          <h2>Questions about Lore</h2>
+          <h2>Lore ke baare mein sawal</h2>
           <FaqList faqs={homeFaqs} />
           <p style={{ marginTop: 16 }}><Link prefetch={false} href="/faq">All questions →</Link></p>
         </div>

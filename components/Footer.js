@@ -8,7 +8,7 @@ export default function Footer() {
       <section className="cta">
         <div className="wrap">
           <h2>Apne status ka star bano</h2>
-          <p>Pick a template, add your photo, share your video.</p>
+          <p>Template chuno, photo daalo, video share karo.</p>
           <PlayStoreButton />
         </div>
       </section>
