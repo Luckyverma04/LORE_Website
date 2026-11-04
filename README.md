@@ -27,4 +27,4 @@ npm run build   # every route should show ○ (Static)
 ```
 
 ## Deploy (Vercel)
-Set `NEXT_PUBLIC_SITE_URL` to the live `.vercel.app` URL so canonical tags and the sitemap use it.
+Live preview: https://lore-website-rho.vercel.app (default in `lib/site.js`; override with `NEXT_PUBLIC_SITE_URL`).
