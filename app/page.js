@@ -6,7 +6,7 @@ import JsonLd from "@/components/JsonLd";
 import CategoryCard from "@/components/CategoryCard";
 import Marquee from "@/components/Marquee";
 import HeroVisual from "@/components/HeroVisual";
-import Hero3DSlot from "@/components/Hero3DSlot";
+import StepJourney from "@/components/StepJourney";
 import { WHAT_IS_LORE, CATEGORIES } from "@/lib/site";
 import { FAQS } from "@/lib/faqs";
 import { mobileAppSchema, faqSchema } from "@/lib/schema";
@@ -66,39 +66,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Kaise banta hai: 4 steps joined by a line; a light runs down it and each step glows in turn
-          (pure CSS). On desktop the 3D step-flow model sits on the right. */}
-      <section className="section section-cream">
-        <div className="wrap kaise-wrap">
-          <div>
-            <h2>Kaise banta hai?</h2>
-            <ol className="light-steps">
-              <li>
-                <span className="node">1</span>
-                <strong>Lore install karo</strong>
-                <small>Google Play se, apne Android phone pe.</small>
-              </li>
-              <li>
-                <span className="node">2</span>
-                <strong>Template chuno</strong>
-                <small>Family, dosti, bhakti, desh-bhakti: jo mood ho.</small>
-              </li>
-              <li>
-                <span className="node">3</span>
-                <strong>Apni photo daalo</strong>
-                <small>Gallery se chuno ya nayi kheencho. Editing nahi.</small>
-              </li>
-              <li>
-                <span className="node">4</span>
-                <strong>WhatsApp status pe share karo</strong>
-                <small>Groups aur dosto ko bhi seedha bhej sakte ho.</small>
-              </li>
-            </ol>
-            <p className="kaise-note"><Link prefetch={false} href="/how-it-works">Poora guide dekho →</Link></p>
-          </div>
-          <Hero3DSlot model="flow" />
-        </div>
-      </section>
+      {/* Kaise banta hai: 4-step visual journey (components/StepJourney.js) */}
+      <StepJourney />
 
       {/* Categories: a scrollable row of template cards, like the app home screen */}
       <section className="section">

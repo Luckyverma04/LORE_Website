@@ -155,45 +155,10 @@ img { max-width: 100%; height: auto; }
   .hero-big .hero3d, .hero-big .flow3d { height: 540px; }
 }
 
-/* Home: chat-bubble hook and Hinglish steps */
+/* Home: chat-bubble hook */
 .bubble {
   display: inline-block; margin: 0 0 14px; padding: 8px 14px;
   background: #fff; border: 1px solid var(--line); border-radius: 18px 18px 18px 4px;
   font-weight: 700; color: var(--ink); box-shadow: 0 6px 16px -10px rgb(0 0 0 / .25);
 }
-.kaise-note { color: var(--muted); }
 
-/* "Kaise banta hai": steps on a line with a travelling light (pure CSS, ~6s loop) */
-.kaise-wrap { display: grid; gap: 24px; align-items: center; }
-@media (min-width: 1024px) { .kaise-wrap { grid-template-columns: 1fr 1fr; } }
-.light-steps { --gap: 26px; list-style: none; margin: 18px 0 20px; padding: 0 0 0 66px; position: relative; display: grid; gap: var(--gap); }
-.light-steps::before { /* the track */
-  content: ""; position: absolute; z-index: 0; left: 22px; top: 24px; bottom: 24px; width: 3px; border-radius: 3px; background: var(--line);
-}
-.light-steps::after { /* the light (behind the number boxes) */
-  content: ""; position: absolute; z-index: 1; left: 18px; top: 0; width: 11px; height: 70px; border-radius: 11px;
-  background: linear-gradient(180deg, transparent, var(--brand) 45%, #ff8a6b 55%, transparent);
-  box-shadow: 0 0 18px 4px rgb(225 80 50 / .45);
-  animation: light-run 6s linear infinite;
-}
-@keyframes light-run { 0% { top: 0; opacity: 0; } 5% { opacity: 1; } 80% { top: calc(100% - 70px); opacity: 1; } 90%, 100% { top: calc(100% - 70px); opacity: 0; } }
-.light-steps li { position: relative; min-height: 48px; display: grid; gap: 2px; align-content: center; }
-.light-steps strong { font-size: 1.15rem; }
-.light-steps small { color: var(--muted); font-size: .95rem; }
-.light-steps .node {
-  position: absolute; z-index: 2; left: -66px; top: 50%; transform: translateY(-50%);
-  display: grid; place-items: center; width: 48px; height: 48px; border-radius: 15px;
-  background: #fff; color: var(--brand); border: 2px solid var(--line); font-weight: 900; font-size: 1.2rem;
-  animation: node-glow 6s linear infinite;
-}
-.light-steps li:nth-child(2) .node { animation-delay: 1.6s; }
-.light-steps li:nth-child(3) .node { animation-delay: 3.2s; }
-.light-steps li:nth-child(4) .node { animation-delay: 4.8s; }
-@keyframes node-glow {
-  0%, 22% { background: var(--brand); color: #fff; border-color: var(--brand); box-shadow: 0 0 0 6px rgb(163 50 42 / .15), 0 0 22px rgb(225 80 50 / .55); }
-  32%, 100% { background: #fff; color: var(--brand); border-color: var(--line); box-shadow: none; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .light-steps::after { display: none; }
-  .light-steps .node { animation: none; background: var(--brand); color: #fff; border-color: var(--brand); }
-}

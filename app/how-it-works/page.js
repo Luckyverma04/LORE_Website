@@ -1,6 +1,6 @@
 import PlayStoreButton from "@/components/PlayStoreButton";
 import Hero3DSlot from "@/components/Hero3DSlot";
-import { STEPS } from "@/lib/site";
+import LightSteps from "@/components/LightSteps";
 import { OG_DEFAULTS } from "@/lib/og";
 
 export const metadata = {
@@ -26,14 +26,8 @@ export default function HowItWorksPage() {
           {/* 3D step flow (desktop only): template cards hop through the 4 steps */}
           <Hero3DSlot model="flow" />
         </div>
-        <ol className="steps grid">
-          {STEPS.map((s) => (
-            <li key={s.title} className="card">
-              <h2 style={{ fontSize: "1.2rem" }}>{s.title}</h2>
-              <p>{s.text}</p>
-            </li>
-          ))}
-        </ol>
+        {/* The 4 steps on a line with a forward-moving light (components/LightSteps.js) */}
+        <LightSteps />
         <PlayStoreButton />
       </div>
     </section>
