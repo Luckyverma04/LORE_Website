@@ -4,7 +4,12 @@ import { lazy, Suspense, useCallback, useEffect, useState } from "react";
 
 // three.js is downloaded ONLY when this runs on a wide screen with WebGL.
 // Phones never download it, so mobile speed (LCP) is not affected.
-const Hero3D = lazy(() => import("./Hero3D"));
+// Which 3D model to show: "phone" (Home), "flow" (How it works), "carousel" (Templates).
+const MODELS = {
+  phone: lazy(() => import("./Hero3D")),
+  flow: lazy(() => import("./StepFlow3D")),
+  carousel: lazy(() => import("./Carousel3D")),
+};
 
 function hasWebGL() {
   try {
@@ -15,7 +20,8 @@ function hasWebGL() {
   }
 }
 
-export default function Hero3DSlot() {
+// Props: model ("phone" | "flow" | "carousel"); for "phone" also screen and cards (images).
+export default function Hero3DSlot({ model = "phone", screen, cards }) {
   const [show, setShow] = useState(false);
   const onFail = useCallback(() => setShow(false), []);
 
@@ -28,9 +34,10 @@ export default function Hero3DSlot() {
   }, []);
 
   if (!show) return null;
+  const Model = MODELS[model] || MODELS.phone;
   return (
     <Suspense fallback={null}>
-      <Hero3D onFail={onFail} />
+      <Model onFail={onFail} screen={screen} cards={cards} />
     </Suspense>
   );
 }

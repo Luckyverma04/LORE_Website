@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
 
-// Images used in the scene (all already in /public). Change these to change the 3D scene.
+// Default images for the scene (all in /public). Each page can pass its own `screen` and `cards`.
 const PHONE_SCREEN = "/screens/screen-1.webp";
 const CARDS = [
   "/templates/patriotic.webp",
@@ -20,7 +20,7 @@ const CARDS = [
  * Follows the mouse a little. Runs only while on screen. With reduced motion it draws one still frame.
  * Loaded only on desktop (see Hero3DSlot), so it never affects mobile speed.
  */
-export default function Hero3D({ onFail }) {
+export default function Hero3D({ onFail, screen = PHONE_SCREEN, cards: cardList = CARDS }) {
   const host = useRef(null);
 
   useEffect(() => {
@@ -67,19 +67,19 @@ export default function Hero3D({ onFail }) {
     const bodyMat = new THREE.MeshStandardMaterial({ color: 0x1d1a19, roughness: 0.35, metalness: 0.4 });
     phone.add(new THREE.Mesh(bodyGeo, bodyMat));
     const screenGeo = new THREE.PlaneGeometry(2.46, 4.1);
-    const screenMat = new THREE.MeshBasicMaterial({ map: tex(PHONE_SCREEN) });
-    const screen = new THREE.Mesh(screenGeo, screenMat);
-    screen.position.z = 0.145;
-    phone.add(screen);
+    const screenMat = new THREE.MeshBasicMaterial({ map: tex(screen) });
+    const screenMesh = new THREE.Mesh(screenGeo, screenMat);
+    screenMesh.position.z = 0.145;
+    phone.add(screenMesh);
     world.add(phone);
 
     // Floating template cards in a ring around the phone
     const cardGeo = new THREE.PlaneGeometry(1.15, 1.62);
-    const cards = CARDS.map((src, i) => {
+    const cards = cardList.map((src, i) => {
       const mat = new THREE.MeshBasicMaterial({ map: tex(src), side: THREE.DoubleSide, transparent: true });
       const mesh = new THREE.Mesh(cardGeo, mat);
       world.add(mesh);
-      return { mesh, mat, a: (i / CARDS.length) * Math.PI * 2, y: (i % 2 ? 1 : -1) * (0.6 + (i % 3) * 0.5) };
+      return { mesh, mat, a: (i / cardList.length) * Math.PI * 2, y: (i % 2 ? 1 : -1) * (0.6 + (i % 3) * 0.5) };
     });
 
     // Mouse: small turn and tilt
@@ -140,7 +140,7 @@ export default function Hero3D({ onFail }) {
       renderer.dispose();
       renderer.domElement.remove();
     };
-  }, [onFail]);
+  }, [onFail, screen, cardList]);
 
   return (
     <div className="hero3d" role="img" aria-label="3D view of the Lore app on a phone with template cards floating around it">

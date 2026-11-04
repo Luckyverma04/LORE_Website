@@ -1,4 +1,5 @@
 import PlayStoreButton from "@/components/PlayStoreButton";
+import Hero3DSlot from "@/components/Hero3DSlot";
 import { STEPS } from "@/lib/site";
 
 export const metadata = {
@@ -12,10 +13,16 @@ export default function HowItWorksPage() {
   return (
     <section className="section">
       <div className="wrap">
-        <h1>How Lore works</h1>
-        <p className="lead">
-          Lore turns your photo into a video you can share. You do not need to edit anything. Here are the four steps.
-        </p>
+        <div className="hero-grid">
+          <div>
+            <h1>How Lore works</h1>
+            <p className="lead">
+              Lore turns your photo into a video you can share. You do not need to edit anything. Here are the four steps.
+            </p>
+          </div>
+          {/* 3D step flow (desktop only): template cards hop through the 4 steps */}
+          <Hero3DSlot model="flow" />
+        </div>
         <ol className="steps grid">
           {STEPS.map((s) => (
             <li key={s.title} className="card">
