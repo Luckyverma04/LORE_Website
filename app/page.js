@@ -56,17 +56,8 @@ export default function HomePage() {
 
       {/* App preview */}
       <section className="section">
-        <div className="wrap see-app">
-          <div>
-            <h2>See the app</h2>
-            <p className="lead">This is the Lore home screen. Templates are grouped into rows by category, and each row has a “See all” button.</p>
-            <ul className="ticks">
-              <li>Rows for Girl, Guy, Friends, Family, Relationships, Vlog and more</li>
-              <li>Tap a template, add your photo, and Lore makes the video</li>
-              <li>Share it straight to your WhatsApp status</li>
-            </ul>
-            <PlayStoreButton />
-          </div>
+        <div className="wrap">
+          <h2>See the app</h2>
           <AppPreview />
         </div>
       </section>

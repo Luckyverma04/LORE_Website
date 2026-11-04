@@ -5,7 +5,7 @@ import * as THREE from "three";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
 
 // Default images for the scene (all in /public). Each page can pass its own `screen` and `cards`.
-const PHONE_SCREEN = "/screens/01-lore-app-home-screen.webp";
+const PHONE_SCREEN = "/screens/screen-1.webp";
 const CARDS = [
   "/templates/patriotic.webp",
   "/templates/girl.webp",
