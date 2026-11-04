@@ -9,6 +9,7 @@ import HeroVisual from "@/components/HeroVisual";
 import { WHAT_IS_LORE, STEPS, CATEGORIES } from "@/lib/site";
 import { FAQS } from "@/lib/faqs";
 import { mobileAppSchema, faqSchema } from "@/lib/schema";
+import { OG_DEFAULTS } from "@/lib/og";
 
 export const metadata = {
   title: { absolute: "Lore: Viral Star Bano – Turn Your Photo into a Viral Video" },
@@ -16,6 +17,7 @@ export const metadata = {
     "Lore is an Android app that turns your photo into a share-ready video. Pick a template, add your photo and post it on WhatsApp status. Get it on Google Play.",
   alternates: { canonical: "/" },
   openGraph: {
+    ...OG_DEFAULTS,
     title: "Lore: Viral Star Bano – Turn Your Photo into a Viral Video",
     description: "Pick a template, add your photo, and share a video where you are the star.",
     url: "/",

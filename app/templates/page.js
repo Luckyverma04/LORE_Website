@@ -2,12 +2,14 @@ import PlayStoreButton from "@/components/PlayStoreButton";
 import CategoryCard from "@/components/CategoryCard";
 import Hero3DSlot from "@/components/Hero3DSlot";
 import { CATEGORIES } from "@/lib/site";
+import { OG_DEFAULTS } from "@/lib/og";
 
 export const metadata = {
   title: "Lore Templates – Family, Friends, Devotion & More",
   description:
     "Browse Lore's template categories: Family, Friends, Relationships, Devotion, Patriotic, Dance, Vlog and animated art styles. Pick one and add your photo.",
   alternates: { canonical: "/templates" },
+  openGraph: { ...OG_DEFAULTS, url: "/templates" },
 };
 
 export default function TemplatesPage() {

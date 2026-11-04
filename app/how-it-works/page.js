@@ -1,12 +1,14 @@
 import PlayStoreButton from "@/components/PlayStoreButton";
 import Hero3DSlot from "@/components/Hero3DSlot";
 import { STEPS } from "@/lib/site";
+import { OG_DEFAULTS } from "@/lib/og";
 
 export const metadata = {
   title: "How Lore Works – Make a Video from Your Photo",
   description:
     "How to use Lore: install the app from Google Play, pick a template, add your photo and share your video on WhatsApp status. No editing needed.",
   alternates: { canonical: "/how-it-works" },
+  openGraph: { ...OG_DEFAULTS, url: "/how-it-works" },
 };
 
 export default function HowItWorksPage() {

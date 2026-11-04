@@ -3,12 +3,14 @@ import FaqList from "@/components/FaqList";
 import JsonLd from "@/components/JsonLd";
 import { FAQS } from "@/lib/faqs";
 import { faqSchema } from "@/lib/schema";
+import { OG_DEFAULTS } from "@/lib/og";
 
 export const metadata = {
   title: "Lore FAQ – Questions About the Lore Video App",
   description:
     "Answers about Lore: what it is, how to make a video, how many photos you need, WhatsApp sharing, privacy and which phones it works on.",
   alternates: { canonical: "/faq" },
+  openGraph: { ...OG_DEFAULTS, url: "/faq" },
 };
 
 export default function FaqPage() {
