@@ -27,7 +27,7 @@ export default function TemplatesPage() {
         </div>
         <div className="cat-grid">
           {CATEGORIES.map((c) => (
-            <CategoryCard key={c.name} category={c} HeadingTag="h2" />
+            <CategoryCard key={c.name} category={c} HeadingTag="h2" sizes="(max-width: 720px) 45vw, 230px" />
           ))}
         </div>
         <PlayStoreButton label="See all templates in the app" />

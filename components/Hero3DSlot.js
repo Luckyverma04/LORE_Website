@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { lazy, Suspense, useCallback, useEffect, useState } from "react";
 
 // three.js is downloaded ONLY on a wide screen with WebGL, and only after the visitor
@@ -24,17 +23,10 @@ function hasWebGL() {
   }
 }
 
-// Static stand-in shown before the 3D loads (same box size as the 3D, so no layout shift).
-function Placeholder({ model, screen }) {
-  if (model === "phone") {
-    return (
-      <div className="hero3d hero3d-placeholder" aria-hidden="true">
-        <div className="hero3d-static-phone">
-          <Image src={screen || "/screens/screen-1.webp"} alt="" width={540} height={900} sizes="210px" />
-        </div>
-      </div>
-    );
-  }
+// Static stand-in for the flow/carousel models (same box size as the 3D, so no layout shift).
+// The phone model's stand-in is server-rendered by HeroVisual instead.
+function Placeholder({ model }) {
+  if (model === "phone") return null;
   return <div className={model === "flow" ? "flow3d" : "hero3d"} aria-hidden="true" />;
 }
 
@@ -61,7 +53,7 @@ export default function Hero3DSlot({ model = "phone", screen, cards }) {
 
   if (!wide) return null;
   const Model = MODELS[model] || MODELS.phone;
-  const fallback = <Placeholder model={model} screen={screen} />;
+  const fallback = <Placeholder model={model} />;
   if (!awake) return fallback;
   return (
     <Suspense fallback={fallback}>

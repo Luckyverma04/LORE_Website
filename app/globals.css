@@ -137,7 +137,10 @@ img { max-width: 100%; height: auto; }
 .flow3d-tag.is-active { background: var(--brand); color: #fff; border-color: var(--brand); }
 .flow3d-tag.is-active .flow3d-num { background: #fff; }
 
-/* Static phone shown before the 3D loads (desktop only) */
-.hero3d-placeholder { display: grid; place-items: center; }
+/* Home hero right side (desktop only): static phone in the HTML, 3D layered on top once loaded */
+.hero-visual { display: none; position: relative; height: 520px; }
+@media (min-width: 1024px) { .hero-visual { display: grid; place-items: center; } }
+.hero-visual .hero3d { position: absolute; inset: 0; }
+.hero-visual:has(canvas) .hero3d-static-phone { display: none; }
 .hero3d-static-phone { width: 210px; background: var(--ink); padding: 8px; border-radius: 30px; box-shadow: 0 18px 40px -18px rgb(110 31 26 / .45); transform: rotate(-4deg); }
-.hero3d-static-phone img { display: block; width: 100%; height: auto; border-radius: 22px; }
+.hero3d-static-phone img { display: block; width: 100%; height: auto; aspect-ratio: 540 / 900; border-radius: 22px; }
