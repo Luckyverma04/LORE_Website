@@ -1,3 +1,4 @@
+import Link from "next/link";
 import PlayStoreButton from "@/components/PlayStoreButton";
 import CategoryCard from "@/components/CategoryCard";
 import Hero3DSlot from "@/components/Hero3DSlot";
@@ -32,6 +33,15 @@ export default function TemplatesPage() {
           {CATEGORIES.map((c) => (
             <CategoryCard key={c.name} category={c} HeadingTag="h2" sizes="(max-width: 720px) 45vw, 230px" />
           ))}
+        </div>
+        <div className="card" style={{ marginBottom: 24 }}>
+          <h2 style={{ fontSize: "1.2rem" }}>Template kaise use karein?</h2>
+          <p>
+            Category kholo, ek template chuno aur apni ek clear photo daalo. Lore ka AI video bana deta hai, jise aap
+            download karke WhatsApp status pe laga sakte ho. Poore steps ke liye{" "}
+            <Link prefetch={false} href="/how-it-works">How it works</Link> dekho, aur koi sawal ho to{" "}
+            <Link prefetch={false} href="/faq">FAQ</Link> padho.
+          </p>
         </div>
         <PlayStoreButton label="See all templates in the app" />
       </div>
