@@ -141,7 +141,7 @@ img { max-width: 100%; height: auto; }
 .hero-visual .hero3d { position: absolute; inset: 0; }
 .hero-visual:has(canvas) .hero3d-static-phone { display: none; }
 .hero3d-static-phone { width: 210px; background: var(--ink); padding: 8px; border-radius: 30px; box-shadow: 0 18px 40px -18px rgb(110 31 26 / .45); transform: rotate(-4deg); }
-.hero3d-static-phone img { display: block; width: 100%; height: auto; aspect-ratio: 540 / 900; border-radius: 22px; }
+.hero3d-static-phone img { display: block; width: 100%; height: auto; border-radius: 22px; }
 
 /* How it works + Templates hero: bigger text and 3D so the first screen feels full */
 .eyebrow { color: var(--brand); font-weight: 800; font-size: .95rem; letter-spacing: .02em; margin-bottom: 10px; }
