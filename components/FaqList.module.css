@@ -1,0 +1,42 @@
+/* FAQ accordion */
+.list { display: grid; gap: 10px; margin-top: 8px; }
+
+.item {
+  background: #fffdfb; border: 1px solid var(--line); border-radius: 16px;
+  transition: border-color .2s, box-shadow .2s;
+}
+.item:hover { border-color: rgb(163 50 42 / .35); }
+.item[open] { border-color: rgb(163 50 42 / .35); box-shadow: 0 10px 26px -20px rgb(80 30 20 / .55); }
+
+.q {
+  list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 16px 18px;
+}
+.q::-webkit-details-marker { display: none; }
+.q:focus-visible { outline: 3px solid var(--brand); outline-offset: 2px; border-radius: 16px; }
+.qText { margin: 0; font-size: 1.05rem; line-height: 1.35; font-weight: 700; }
+
+/* + / − icon */
+.icon {
+  flex: 0 0 auto; position: relative; width: 30px; height: 30px; border-radius: 50%;
+  background: rgb(163 50 42 / .08); transition: background .2s, transform .25s;
+}
+.icon::before, .icon::after {
+  content: ""; position: absolute; left: 50%; top: 50%; width: 12px; height: 2px; border-radius: 2px;
+  background: var(--brand); transform: translate(-50%, -50%);
+}
+.icon::after { transform: translate(-50%, -50%) rotate(90deg); transition: transform .25s; }
+.item[open] .icon { background: var(--brand); }
+.item[open] .icon::before, .item[open] .icon::after { background: #fff; }
+.item[open] .icon::after { transform: translate(-50%, -50%) rotate(0deg); }
+
+.a { margin: 0; padding: 0 18px 18px; color: var(--muted); line-height: 1.6; }
+
+@media (prefers-reduced-motion: reduce) { .icon, .icon::after, .item { transition: none; } }
+
+/* FAQ page: closing call to action */
+.cta {
+  margin-top: 28px; padding: 20px; border-radius: 18px; background: #fff;
+  border: 1px solid var(--line); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px;
+}
+.cta p { margin: 0; font-size: 1.05rem; }

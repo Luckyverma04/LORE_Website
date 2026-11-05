@@ -26,7 +26,7 @@ export const metadata = {
 };
 
 // FAQ #1 ("What is Lore?") is already answered at the top, so the home FAQ starts from #2.
-const homeFaqs = FAQS.slice(1);
+const homeFaqs = FAQS.slice(1, 8);
 
 export default function HomePage() {
   return (
@@ -90,7 +90,7 @@ export default function HomePage() {
         <div className="wrap">
           <h2>Lore ke baare mein sawal</h2>
           <FaqList faqs={homeFaqs} />
-          <p style={{ marginTop: 16 }}><Link prefetch={false} href="/faq">All questions →</Link></p>
+          <p style={{ marginTop: 16 }}><Link prefetch={false} href="/faq">Saare sawal dekho →</Link></p>
         </div>
       </section>
     </>

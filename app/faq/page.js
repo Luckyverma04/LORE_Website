@@ -1,5 +1,6 @@
 import PlayStoreButton from "@/components/PlayStoreButton";
 import FaqList from "@/components/FaqList";
+import faqStyles from "@/components/FaqList.module.css";
 import JsonLd from "@/components/JsonLd";
 import { FAQS } from "@/lib/faqs";
 import { faqSchema } from "@/lib/schema";
@@ -20,8 +21,11 @@ export default function FaqPage() {
       <div className="wrap">
         <h1>Lore FAQ</h1>
         <p className="lead">Short, direct answers about Lore: Viral Star Bano.</p>
-        <FaqList faqs={FAQS} />
-        <p style={{ marginTop: 24 }}><PlayStoreButton /></p>
+        <FaqList faqs={FAQS} HeadingTag="h2" />
+        <div className={faqStyles.cta}>
+          <p><strong>Aur sawal?</strong> Sabse aasaan jawab: app khud try karke dekho.</p>
+          <PlayStoreButton />
+        </div>
       </div>
     </section>
   );

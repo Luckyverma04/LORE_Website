@@ -2,6 +2,8 @@
 const nextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
+  // Hide the round "N" Next.js badge shown during `npm run dev` (it never appears on the live site).
+  devIndicators: false,
   images: {
     // AVIF first (smallest files; Vercel encodes each size once and caches it), WebP as fallback.
     formats: ["image/avif", "image/webp"],
