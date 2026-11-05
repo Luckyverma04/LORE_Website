@@ -6,6 +6,7 @@ import JsonLd from "@/components/JsonLd";
 import CategoryCard from "@/components/CategoryCard";
 import Marquee from "@/components/Marquee";
 import HeroVisual from "@/components/HeroVisual";
+import HomeAnimations from "@/components/HomeAnimations";
 import StepJourney from "@/components/StepJourney";
 import { WHAT_IS_LORE, CATEGORIES } from "@/lib/site";
 import { FAQS } from "@/lib/faqs";
@@ -34,6 +35,7 @@ export default function HomePage() {
       <JsonLd data={websiteSchema()} />
       <JsonLd data={mobileAppSchema()} />
       <JsonLd data={faqSchema(homeFaqs)} />
+      <HomeAnimations />
 
       {/* Hero: H1 + 40–60 word answer + Play button (all in the first screen on mobile) */}
       <section className="section section-cream hero">

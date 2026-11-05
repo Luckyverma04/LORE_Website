@@ -21,6 +21,7 @@ export default function ScrollReveal() {
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     if (!("IntersectionObserver" in window)) return;
+    if (document.querySelector("[data-home-motion]")) return; // home page uses GSAP (HomeAnimations)
 
     let io;
     let cancelled = false;

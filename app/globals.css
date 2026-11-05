@@ -8,11 +8,11 @@
   --brand: #a3322a;        /* Lore maroon (logo, links, CTA box) */
   --brand-dark: #6e1f1a;
   --ink: #1d1a19;          /* main text */
-  --muted: oklch(0.97 0 0);        /* secondary text */
+  --muted: #5c5552;        /* secondary text (Lore design; shadcn init had replaced this with near-white) */
   --cream: #faf6f3;        /* app background */
-  --card: oklch(1 0 0);         /* card background */
+  --card: #ffffff;         /* card background */
   --line: #ece4de;         /* borders */
-  --radius: 0.625rem;          /* card corner roundness (app uses big rounded cards) */
+  --radius: 22px;          /* card corner roundness (app uses big rounded cards) */
   --gutter: 16px;          /* side padding on mobile */          --background: oklch(1 0 0);          --foreground: oklch(0.145 0 0);          --card-foreground: oklch(0.145 0 0);          --popover: oklch(1 0 0);          --popover-foreground: oklch(0.145 0 0);          --primary: oklch(0.205 0 0);          --primary-foreground: oklch(0.985 0 0);          --secondary: oklch(0.97 0 0);          --secondary-foreground: oklch(0.205 0 0);          --muted-foreground: oklch(0.556 0 0);          --accent: oklch(0.97 0 0);          --accent-foreground: oklch(0.205 0 0);          --destructive: oklch(0.577 0.245 27.325);          --border: oklch(0.922 0 0);          --input: oklch(0.922 0 0);          --ring: oklch(0.708 0 0);          --chart-1: oklch(0.87 0 0);          --chart-2: oklch(0.556 0 0);          --chart-3: oklch(0.439 0 0);          --chart-4: oklch(0.371 0 0);          --chart-5: oklch(0.269 0 0);          --sidebar: oklch(0.985 0 0);          --sidebar-foreground: oklch(0.145 0 0);          --sidebar-primary: oklch(0.205 0 0);          --sidebar-primary-foreground: oklch(0.985 0 0);          --sidebar-accent: oklch(0.97 0 0);          --sidebar-accent-foreground: oklch(0.205 0 0);          --sidebar-border: oklch(0.922 0 0);          --sidebar-ring: oklch(0.708 0 0);
 }
 
@@ -30,7 +30,7 @@ body {
 h1, h2, h3 { line-height: 1.2; margin: 0 0 12px; }
 h1 { font-size: clamp(1.9rem, 7vw, 2.8rem); font-weight: 800; }
 h2 { font-size: clamp(1.4rem, 5vw, 2rem); font-weight: 800; }
-h3 { font-size: 1.1rem; }
+h3 { font-size: 1.1rem; font-weight: 700; }
 p { margin: 0 0 16px; }
 a { color: var(--brand); }
 img { max-width: 100%; height: auto; }
@@ -197,15 +197,6 @@ img { max-width: 100%; height: auto; }
 .preview.reveal { transform: translateY(40px) scale(.97); }
 .preview.reveal.is-visible { transform: none; }
 
-/* Section headings: maroon underline grows in */
-main section h2::after {
-  content: ""; display: block; width: 0; height: 4px; margin-top: 10px; border-radius: 4px;
-  background: linear-gradient(90deg, var(--brand), #e0644a);
-  transition: width .8s cubic-bezier(.2,.7,.2,1) .2s;
-}
-main section h2.is-visible::after, main section h2:not(.reveal)::after { width: 56px; }
-.hero h2::after, .ctaText h2::after, main details h2::after, .card h2::after, .cat-card h2::after, main ol h2::after { display: none; }
-
 /* Hero: soft floating blobs behind the content */
 .hero { position: relative; overflow: hidden; isolation: isolate; }
 .hero-blob { position: absolute; z-index: -1; border-radius: 50%; pointer-events: none; will-change: transform; }
@@ -242,7 +233,6 @@ main section h2.is-visible::after, main section h2:not(.reveal)::after { width: 
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; transition: none; }
   .hero-blob, .play::after, .hero .bubble, .hero h1, .hero .play { animation: none; }
-  main section h2::after { transition: none; width: 56px; }
 }
 
 @theme inline {
@@ -332,4 +322,22 @@ main section h2.is-visible::after, main section h2:not(.reveal)::after { width: 
   html {
     @apply font-sans;
   }
+}
+/* Home: scroll progress bar (filled by GSAP in components/HomeAnimations.js) */
+.scroll-progress {
+  position: fixed; left: 0; right: 0; top: var(--header-h, 60px); height: 3px; z-index: 49;
+  background: linear-gradient(90deg, var(--brand), #e0644a); transform: scaleX(0); transform-origin: left; pointer-events: none;
+  box-shadow: 0 0 8px rgb(224 100 74 / .5);
+}
+.preview, .cat-row { perspective: 900px; }
+
+/* Header links: spinner while the page loads (components/NavLink.js) */
+.header .nav a { display: inline-flex; align-items: center; gap: 6px; }
+.nav-spinner { width: 0; height: 12px; border-radius: 50%; border: 2px solid transparent; transition: width .15s; }
+.nav-spinner.is-on { width: 12px; border-color: currentColor; border-right-color: transparent; animation: nav-spin .6s linear infinite; }
+@keyframes nav-spin { to { transform: rotate(360deg); } }
+
+/* "App andar se": room for the card-fan animation so rotated cards are never clipped */
+@media (min-width: 900px) {
+  .preview { overflow: visible; padding: 24px 0 32px; justify-content: space-between; }
 }
