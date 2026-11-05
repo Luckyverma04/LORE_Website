@@ -9,7 +9,7 @@ import HeroVisual from "@/components/HeroVisual";
 import StepJourney from "@/components/StepJourney";
 import { WHAT_IS_LORE, CATEGORIES } from "@/lib/site";
 import { FAQS } from "@/lib/faqs";
-import { mobileAppSchema, faqSchema } from "@/lib/schema";
+import { websiteSchema, mobileAppSchema, faqSchema } from "@/lib/schema";
 import { OG_DEFAULTS } from "@/lib/og";
 
 export const metadata = {
@@ -31,6 +31,7 @@ const homeFaqs = FAQS.slice(1, 8);
 export default function HomePage() {
   return (
     <>
+      <JsonLd data={websiteSchema()} />
       <JsonLd data={mobileAppSchema()} />
       <JsonLd data={faqSchema(homeFaqs)} />
 
