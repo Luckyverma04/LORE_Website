@@ -39,13 +39,6 @@
 .step:hover { transform: translateY(-4px); box-shadow: 0 18px 36px -22px rgb(80 30 20 / .55); }
 .feature { background: #fff; border-color: rgb(179 51 42 / .25); }
 
-/* Gentle reveal while scrolling (only in browsers that support scroll-driven animations) */
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .step { animation: reveal linear both; animation-timeline: view(); animation-range: entry 0% entry 45%; }
-  }
-}
-@keyframes reveal { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
 
 .visual {
   position: relative; height: 222px; display: grid; place-items: center;

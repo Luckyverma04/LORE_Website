@@ -36,7 +36,9 @@ export default function HomePage() {
       <JsonLd data={faqSchema(homeFaqs)} />
 
       {/* Hero: H1 + 40–60 word answer + Play button (all in the first screen on mobile) */}
-      <section className="section section-cream">
+      <section className="section section-cream hero">
+        <span className="hero-blob hero-blob-a" aria-hidden="true" />
+        <span className="hero-blob hero-blob-b" aria-hidden="true" />
         <div className="wrap hero-grid">
           <div>
             <p className="bubble">Roz wahi purana photo status? 🙄</p>

@@ -2,6 +2,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import JsonLd from "@/components/JsonLd";
+import ScrollReveal from "@/components/ScrollReveal";
 import { SITE_URL } from "@/lib/site";
 import { organizationSchema } from "@/lib/schema";
 import { OG_DEFAULTS } from "@/lib/og";
@@ -25,6 +26,7 @@ export default function RootLayout({ children }) {
         <Header />
         <main>{children}</main>
         <Footer />
+        <ScrollReveal />
       </body>
     </html>
   );

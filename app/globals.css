@@ -1,15 +1,19 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
 /* Mobile-first. Colours taken from the Lore app (maroon logo, cream background). */
 :root {
   /* ───────── DESIGN SETTINGS: change colours and shapes here ───────── */
   --brand: #a3322a;        /* Lore maroon (logo, links, CTA box) */
   --brand-dark: #6e1f1a;
   --ink: #1d1a19;          /* main text */
-  --muted: #5c5552;        /* secondary text */
+  --muted: oklch(0.97 0 0);        /* secondary text */
   --cream: #faf6f3;        /* app background */
-  --card: #ffffff;         /* card background */
+  --card: oklch(1 0 0);         /* card background */
   --line: #ece4de;         /* borders */
-  --radius: 22px;          /* card corner roundness (app uses big rounded cards) */
-  --gutter: 16px;          /* side padding on mobile */
+  --radius: 0.625rem;          /* card corner roundness (app uses big rounded cards) */
+  --gutter: 16px;          /* side padding on mobile */          --background: oklch(1 0 0);          --foreground: oklch(0.145 0 0);          --card-foreground: oklch(0.145 0 0);          --popover: oklch(1 0 0);          --popover-foreground: oklch(0.145 0 0);          --primary: oklch(0.205 0 0);          --primary-foreground: oklch(0.985 0 0);          --secondary: oklch(0.97 0 0);          --secondary-foreground: oklch(0.205 0 0);          --muted-foreground: oklch(0.556 0 0);          --accent: oklch(0.97 0 0);          --accent-foreground: oklch(0.205 0 0);          --destructive: oklch(0.577 0.245 27.325);          --border: oklch(0.922 0 0);          --input: oklch(0.922 0 0);          --ring: oklch(0.708 0 0);          --chart-1: oklch(0.87 0 0);          --chart-2: oklch(0.556 0 0);          --chart-3: oklch(0.439 0 0);          --chart-4: oklch(0.371 0 0);          --chart-5: oklch(0.269 0 0);          --sidebar: oklch(0.985 0 0);          --sidebar-foreground: oklch(0.145 0 0);          --sidebar-primary: oklch(0.205 0 0);          --sidebar-primary-foreground: oklch(0.985 0 0);          --sidebar-accent: oklch(0.97 0 0);          --sidebar-accent-foreground: oklch(0.205 0 0);          --sidebar-border: oklch(0.922 0 0);          --sidebar-ring: oklch(0.708 0 0);
 }
 
 * { box-sizing: border-box; }
@@ -184,4 +188,148 @@ img { max-width: 100%; height: auto; }
 @media (max-width: 480px) {
   .header .logo { font-size: 1.5rem; }
   .header .nav a { padding: 6px 9px; font-size: .9rem; }
+}
+/* ═════════════ Animations ═════════════ */
+
+/* Scroll reveal (classes added by components/ScrollReveal.js; content is visible without JS) */
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1); transition-delay: var(--reveal-delay, 0ms); }
+.reveal.is-visible { opacity: 1; transform: none; }
+.preview.reveal { transform: translateY(40px) scale(.97); }
+.preview.reveal.is-visible { transform: none; }
+
+/* Section headings: maroon underline grows in */
+main section h2::after {
+  content: ""; display: block; width: 0; height: 4px; margin-top: 10px; border-radius: 4px;
+  background: linear-gradient(90deg, var(--brand), #e0644a);
+  transition: width .8s cubic-bezier(.2,.7,.2,1) .2s;
+}
+main section h2.is-visible::after, main section h2:not(.reveal)::after { width: 56px; }
+.hero h2::after, .ctaText h2::after, main details h2::after, .card h2::after, .cat-card h2::after, main ol h2::after { display: none; }
+
+/* Hero: soft floating blobs behind the content */
+.hero { position: relative; overflow: hidden; isolation: isolate; }
+.hero-blob { position: absolute; z-index: -1; border-radius: 50%; pointer-events: none; will-change: transform; }
+.hero-blob-a { width: 520px; height: 520px; background: radial-gradient(circle, rgb(242 184 166 / .75) 0, rgb(242 184 166 / 0) 65%); top: -120px; right: 8%; animation: blob-a 14s ease-in-out infinite alternate; }
+.hero-blob-b { width: 440px; height: 440px; background: radial-gradient(circle, rgb(246 215 196 / .85) 0, rgb(246 215 196 / 0) 65%); bottom: -140px; left: -60px; animation: blob-b 18s ease-in-out infinite alternate; }
+@keyframes blob-a { to { transform: translate(-60px, 60px) scale(1.15); } }
+@keyframes blob-b { to { transform: translate(80px, -40px) scale(1.1); } }
+
+/* Hero text entrance (the "What is Lore?" paragraph is the LCP element, so it is not animated) */
+.hero .bubble { animation: pop-in .6s cubic-bezier(.2,1.4,.4,1) both; }
+.hero h1 { animation: rise-in .7s cubic-bezier(.2,.7,.2,1) .08s both; }
+.hero .play { animation: rise-in .7s cubic-bezier(.2,.7,.2,1) .24s both; }
+@keyframes pop-in { from { opacity: 0; transform: scale(.8) translateY(8px); } }
+@keyframes rise-in { from { opacity: 0; transform: translateY(18px); } }
+
+/* Play Store button: lift on hover + a light sweep */
+.play { position: relative; overflow: hidden; transition: transform .2s ease, box-shadow .2s ease, background .2s; }
+.play:hover { transform: translateY(-2px); box-shadow: 0 12px 24px -12px rgb(0 0 0 / .55); }
+.play::after {
+  content: ""; position: absolute; top: 0; left: -60%; width: 40%; height: 100%;
+  background: linear-gradient(100deg, transparent, rgb(255 255 255 / .35), transparent);
+  transform: skewX(-20deg); animation: shine 4.5s ease-in-out infinite;
+}
+@keyframes shine { 0%, 70% { left: -60%; } 100% { left: 130%; } }
+
+/* Cards and screenshots: lift and zoom on hover */
+.cat-card { transition: transform .25s ease, box-shadow .25s ease; }
+.cat-card:hover { transform: translateY(-6px); box-shadow: 0 18px 32px -20px rgb(80 30 20 / .55); }
+.cat-card .cat-img { transition: transform .4s ease; }
+.cat-card:hover .cat-img { transform: scale(1.04); }
+.preview .screen { transition: transform .3s ease, box-shadow .3s ease; }
+.preview .screen:hover { transform: translateY(-8px) rotate(-1deg); }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .hero-blob, .play::after, .hero .bubble, .hero h1, .hero .play { animation: none; }
+  main section h2::after { transition: none; width: 56px; }
+}
+
+@theme inline {
+  --font-heading: var(--font-sans);
+  --font-sans: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
 }
