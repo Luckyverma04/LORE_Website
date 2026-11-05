@@ -1,28 +1,18 @@
-import Image from "next/image";
 import Link from "next/link";
 import PlayStoreButton from "./PlayStoreButton";
 import styles from "./Footer.module.css";
 import { NAV, APP_NAME, PLAY_URL, PLAY_FACTS } from "@/lib/site";
 
-// Real Lore template images, fanned out on the right of the CTA band.
-const FAN = ["/templates/girl.webp", "/templates/patriotic.webp", "/templates/family.webp"];
 
 export default function Footer() {
   return (
     <>
-      {/* Closing call to action, with a fan of real template cards on the side */}
+      {/* Closing call to action: light band, so it stands apart from the maroon header */}
       <section className={styles.cta}>
-        <div className={`wrap ${styles.ctaGrid}`}>
-          <div className={styles.ctaText}>
-            <h2>Apne status ka star bano</h2>
-            <p>Template chuno, photo daalo, video share karo.</p>
-            <PlayStoreButton />
-          </div>
-          <div className={styles.fan} aria-hidden="true">
-            {FAN.map((src, i) => (
-              <Image key={src} src={src} alt="" width={230} height={325} sizes="150px" className={`${styles.card} ${styles["card" + i]}`} />
-            ))}
-          </div>
+        <div className={`wrap ${styles.ctaText}`}>
+          <h2>Apne status ka <span>star</span> bano</h2>
+          <p>Template chuno, photo daalo, video share karo.</p>
+          <PlayStoreButton />
         </div>
       </section>
 

@@ -11,7 +11,7 @@ const BLANK = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAA
  * - <picture> + media query: only screens 1024px+ download it; phones get the blank GIF.
  * - After the first interaction, Hero3DSlot swaps in the 3D phone (CSS hides the static one).
  */
-export default function HeroVisual({ screen = "/screens/screen-1.webp", cards }) {
+export default function HeroVisual({ screen = "/screens/app-home-girl-guy.webp", cards }) {
   const { props } = getImageProps({ src: screen, alt: "", width: 540, height: 900, sizes: "210px" });
   return (
     <div className="hero-visual">
