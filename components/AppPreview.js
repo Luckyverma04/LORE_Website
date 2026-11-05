@@ -11,7 +11,7 @@ export default function AppPreview() {
           src={s.src}
           alt={s.alt}
           width={540}
-          height={790}
+          height={834}
           sizes="240px"
           quality={60}
           className="screen"
