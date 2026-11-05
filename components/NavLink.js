@@ -1,23 +1,30 @@
 "use client";
 
-import Link, { useLinkStatus } from "next/link";
+import { useEffect } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-// Small spinner shown inside the link while its page is loading.
-function Pending() {
-  const { pending } = useLinkStatus();
-  return <span className={pending ? "nav-spinner is-on" : "nav-spinner"} aria-hidden="true" />;
-}
-
-// Header link: starts loading the page when the mouse hovers (or a finger touches) it,
-// so the click opens it almost instantly; shows a spinner if it still needs a moment.
+// Header link that loads its page in the background, so a click opens it with no wait:
+// - once the browser is idle after the page loads (works on phones too, where there is no hover)
+// - again on hover / touch / keyboard focus, just in case
+// Nothing is shown to the user; it only happens behind the scenes.
 export default function NavLink({ href, children, className }) {
   const router = useRouter();
-  const warm = () => router.prefetch(href);
+
+  useEffect(() => {
+    const warm = () => router.prefetch(href);
+    if ("requestIdleCallback" in window) {
+      const id = requestIdleCallback(warm, { timeout: 4000 });
+      return () => cancelIdleCallback(id);
+    }
+    const t = setTimeout(warm, 2500);
+    return () => clearTimeout(t);
+  }, [href, router]);
+
+  const warmNow = () => router.prefetch(href);
   return (
-    <Link prefetch={false} href={href} className={className} onMouseEnter={warm} onTouchStart={warm} onFocus={warm}>
+    <Link prefetch={false} href={href} className={className} onMouseEnter={warmNow} onTouchStart={warmNow} onFocus={warmNow}>
       {children}
-      <Pending />
     </Link>
   );
 }

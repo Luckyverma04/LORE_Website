@@ -331,12 +331,6 @@ img { max-width: 100%; height: auto; }
 }
 .preview, .cat-row { perspective: 900px; }
 
-/* Header links: spinner while the page loads (components/NavLink.js) */
-.header .nav a { display: inline-flex; align-items: center; gap: 6px; }
-.nav-spinner { width: 0; height: 12px; border-radius: 50%; border: 2px solid transparent; transition: width .15s; }
-.nav-spinner.is-on { width: 12px; border-color: currentColor; border-right-color: transparent; animation: nav-spin .6s linear infinite; }
-@keyframes nav-spin { to { transform: rotate(360deg); } }
-
 /* "App andar se": room for the card-fan animation so rotated cards are never clipped */
 @media (min-width: 900px) {
   .preview { overflow: visible; padding: 24px 0 32px; justify-content: space-between; }
