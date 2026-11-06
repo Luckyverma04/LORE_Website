@@ -132,22 +132,30 @@ function Cards({ progressRef }) {
 function Rig({ progressRef, children }) {
   const group = useRef();
   const phone = useRef();
-  // Hero height is measured once (and on resize), never inside the render loop:
-  // reading layout every frame while scrolling causes jank.
+  // Hero height (on load and resize) and scroll position (in the scroll event) are read outside the
+  // render loop. Reading them inside useFrame, right after other scripts change styles, would force
+  // the browser to recalculate styles on every frame.
   const heroH = useRef(1);
+  const scrollY = useRef(0);
   useEffect(() => {
     const measure = () => {
       const hero = document.querySelector(".hero");
       heroH.current = hero ? hero.offsetHeight : window.innerHeight;
     };
+    const onScroll = () => { scrollY.current = window.scrollY; };
     measure();
+    onScroll();
     window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("resize", measure);
+      window.removeEventListener("scroll", onScroll);
+    };
   }, []);
   useFrame((state, dt) => {
     // scroll progress of the hero (0 at the top, 1 when the hero has scrolled away)
     const h = heroH.current;
-    const target = Math.min(1, Math.max(0, window.scrollY / h));
+    const target = Math.min(1, Math.max(0, scrollY.current / h));
     progressRef.current = THREE.MathUtils.damp(progressRef.current, target, 6, dt);
 
     const p = progressRef.current;

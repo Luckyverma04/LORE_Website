@@ -34,29 +34,16 @@ export default function HomeAnimations() {
       await pause();
 
       // Native scroll (no smooth-scroll library): fastest and most responsive on every device.
-
-      // ---------- Scroll progress bar (sits right under the sticky header) ----------
+      // Simple fade-up reveals (headings, intro lines, cards, steps, FAQ) are done with CSS +
+      // IntersectionObserver in components/ScrollReveal.js: no layout reads, no forced reflow.
+      // GSAP is used only for effects tied to the scroll position (scrub) and for pointer effects.
       const bar = document.querySelector(".scroll-progress");
-      const header = document.querySelector(".header");
-      const setHeaderH = () => header && document.documentElement.style.setProperty("--header-h", `${header.offsetHeight}px`);
-      setHeaderH();
-      const ro = header ? new ResizeObserver(setHeaderH) : null;
-      ro?.observe(header);
-      // Elements that also have CSS hover transitions: switch those off while GSAP animates,
-      // otherwise the CSS transition fights GSAP and the element gets stuck mid-animation.
-      const enter = (targets, vars) =>
-        gsap.from(targets, {
-          ...vars,
-          onStart() { gsap.utils.toArray(targets).forEach((el) => (el.style.transition = "none")); },
-          onComplete() { gsap.set(targets, { clearProps: "transform,opacity,transition" }); },
-        });
 
       // Each group below is set up in its own short task (with a pause in between).
       const ctx = gsap.context(() => {});
       const off = [];
       cleanup = () => {
         off.forEach((f) => f());
-        ro?.disconnect();
         ctx.revert();
       };
       const step = async (fn) => {
@@ -76,40 +63,32 @@ export default function HomeAnimations() {
       });
 
       await step(() => {
-        // ---------- Section headings and intro lines ----------
-        gsap.utils.toArray("main section:not(.hero) h2").forEach((h) => {
-          gsap.from(h, { yPercent: 35, opacity: 0, duration: 1.1, ease: "expo.out", scrollTrigger: { trigger: h, start: "top 90%", once: true } });
-        });
-        gsap.utils.toArray("main section:not(.hero) .lead").forEach((p) => {
-          gsap.from(p, { y: 24, opacity: 0, duration: 0.8, delay: 0.1, ease: "power3.out", scrollTrigger: { trigger: p, start: "top 90%", once: true } });
-        });
-
-        // ---------- "Ek photo, kai andaaz" strip ----------
-        gsap.from(".marquee", { opacity: 0, duration: 1, ease: "power3.out", scrollTrigger: { trigger: ".marquee", start: "top 90%", once: true } });
         // the film strip straightens out as it crosses the screen; the big words drift the other way
         gsap.fromTo(".marquee", { rotate: -8 }, { rotate: -1.5, ease: "none", scrollTrigger: { trigger: ".film", start: "top bottom", end: "bottom top", scrub: true } });
         gsap.fromTo(".film-words", { xPercent: 0 }, { xPercent: -12, ease: "none", scrollTrigger: { trigger: ".film", start: "top bottom", end: "bottom top", scrub: true } });
       });
 
       await step(() => {
-
         // ---------- App screenshots: a deck of cards that opens as you scroll ----------
         const preview = document.querySelector(".preview");
         const screens = gsap.utils.toArray(".preview .shot");
         if (preview && screens.length) {
-          screens.forEach((el) => (el.style.transition = "none")); // CSS hover transition would fight the scrub
           if (isDesktop) {
             // Desktop: all cards start stacked in the middle like a closed deck, slightly fanned,
             // and spread out to their places, tied to the scroll position.
+            // All positions are measured first in one batch, before GSAP writes any style.
+            const p = preview.getBoundingClientRect();
+            const centre = p.left + p.width / 2;
+            const dx = screens.map((el) => {
+              const r = el.getBoundingClientRect();
+              return centre - (r.left + r.width / 2);
+            });
+            screens.forEach((el) => (el.style.transition = "none")); // CSS hover transition would fight the scrub
             const mid = (screens.length - 1) / 2;
             gsap.fromTo(
               screens,
               {
-                x: (i, el) => {
-                  const p = preview.getBoundingClientRect();
-                  const r = el.getBoundingClientRect();
-                  return p.left + p.width / 2 - (r.left + r.width / 2);
-                },
+                x: (i) => dx[i],
                 y: (i) => Math.abs(i - mid) * 18,
                 rotate: (i) => (i - mid) * 7,
                 scale: 0.9,
@@ -120,39 +99,13 @@ export default function HomeAnimations() {
                 scrollTrigger: { trigger: preview, start: "top 85%", end: "top 30%", scrub: 0.8 },
               }
             );
-          } else {
-            // Phones: simple rise in one by one (the row scrolls sideways, so no fan)
-            enter(screens, { y: 60, opacity: 0, duration: 0.8, stagger: 0.1, ease: "power3.out", scrollTrigger: { trigger: preview, start: "top 88%", once: true } });
           }
         }
       });
 
       await step(() => {
-
-        // ---------- "Kaise banta hai" steps rise one by one ----------
-        const steps = gsap.utils.toArray('section[aria-labelledby="kaise-h"] ol > li');
-        if (steps.length) {
-          enter(steps, {
-            y: 80, opacity: 0, rotateX: 12, transformOrigin: "50% 100%",
-            duration: 0.9, stagger: 0.15, ease: "power3.out",
-            scrollTrigger: { trigger: steps[0], start: "top 85%", once: true },
-          });
-        }
-
-        // ---------- Template cards ----------
-        enter(".cat-row .cat-card", {
-          x: 60, opacity: 0, duration: 0.7, stagger: 0.08, ease: "power3.out",
-          scrollTrigger: { trigger: ".cat-row", start: "top 88%", once: true },
-        });
-
-        // ---------- Closing curtain: the giant footer word rises ----------
+        // ---------- Closing curtain: the giant footer word fades up ----------
         gsap.from("footer p[aria-hidden]", { opacity: 0.15, ease: "none", scrollTrigger: { trigger: "footer", start: "top bottom", end: "bottom bottom", scrub: true } });
-
-        // ---------- FAQ ----------
-        gsap.from("main details", {
-          y: 30, opacity: 0, duration: 0.6, stagger: 0.07, ease: "power2.out",
-          scrollTrigger: { trigger: "main details", start: "top 90%", once: true },
-        });
       });
       if (cancelled) return;
 
@@ -219,12 +172,6 @@ export default function HomeAnimations() {
     };
   }, []);
 
-  // Marker (server-rendered too) so ScrollReveal knows the home page has its own animations,
-  // plus the scroll progress bar.
-  return (
-    <>
-      <span data-home-motion hidden />
-      <div className="scroll-progress" aria-hidden="true" />
-    </>
-  );
+  // Scroll progress bar (filled by GSAP above).
+  return <div className="scroll-progress" aria-hidden="true" />;
 }

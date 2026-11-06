@@ -12,6 +12,7 @@ const PRINTS = [
 /**
  * Right side of the Home hero.
  * 1. CSS 3D stage (server HTML, every screen size): the real app screen in a tilted phone,
+ *    (that phone image is the LCP element on desktop: eager + fetchpriority="high"; nothing else is prioritised)
  *    with Polaroid template prints floating around it. Costs no JavaScript.
  * 2. On desktop, after the first interaction, HeroStageSlot loads the WebGL version of the
  *    same stage and cross-fades to it.
@@ -22,7 +23,7 @@ export default function HeroVisual() {
       <div className="stage-ring" aria-hidden="true" />
       <div className="css-stage" aria-hidden="true">
         <div className="phone3d">
-          <Image src="/screens/app-screen-1.webp" alt="" width={540} height={834} sizes="(min-width: 1024px) 250px, 214px" quality={60} fetchPriority="low" />
+          <Image src="/screens/app-screen-1.webp" alt="" width={540} height={834} sizes="(min-width: 1024px) 250px, 214px" quality={60} loading="eager" fetchPriority="high" />
         </div>
         {PRINTS.map((p) => (
           <figure key={p.src} className={`polaroid ${p.cls}`}>

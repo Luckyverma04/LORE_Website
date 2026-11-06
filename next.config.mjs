@@ -4,10 +4,12 @@ const nextConfig = {
   partialPrefetching: true,
   // Hide the round "N" Next.js badge shown during `npm run dev` (it never appears on the live site).
   devIndicators: false,
-  // Put the CSS straight into the HTML instead of separate render-blocking files,
-  // so the first screen can paint without waiting for extra requests (faster FCP/LCP on mobile).
-  // inlineCss is off: with the bigger design CSS it was copied 3 times into every HTML page.
-  // experimental: { inlineCss: true },
+  experimental: {
+    // CSS: one render-blocking stylesheet per page instead of three. The whole site's CSS is small
+    // (about 15 KB compressed), so one shared, cached file is cheaper than extra requests.
+    // (inlineCss stays off: it copied the CSS 3 times into every HTML page.)
+    cssChunking: { type: "graph", requestCost: 100000 },
+  },
   images: {
     // AVIF first (smallest files; Vercel encodes each size once and caches it), WebP as fallback.
     formats: ["image/avif", "image/webp"],

@@ -2,13 +2,15 @@
 
 import { useEffect } from "react";
 
-// Scroll-reveal animations for the whole site.
+// Scroll-reveal animations for the whole site (Home too).
+// Pure CSS transitions started by an IntersectionObserver: all element positions are read once in one
+// batch, then classes are written, so there is no forced reflow and nothing runs while scrolling.
 // Content is ALWAYS visible in the HTML (good for Google and for users without JavaScript).
 // Only after this script runs do we hide below-the-fold items and fade them in as they scroll into view.
 const TARGETS = [
-  "main section h2",
+  "main section:not(.hero) h2",
   ".lead:not(.hero .lead)",
-  ".marquee",
+  ".film-tilt",        // the film strip's wrapper (GSAP turns the strip itself while you scroll)
   ".preview",          // horizontal rows are revealed as a whole, so cards that are
   ".cat-row",          // off to the side (only reachable by swiping) never stay hidden
   ".cat-grid .cat-card",
@@ -21,7 +23,6 @@ export default function ScrollReveal() {
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     if (!("IntersectionObserver" in window)) return;
-    if (document.querySelector("[data-home-motion]")) return; // home page uses GSAP (HomeAnimations)
 
     let io;
     let cancelled = false;

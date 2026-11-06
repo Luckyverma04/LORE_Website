@@ -470,14 +470,15 @@ border-radius: 2px;
   background: linear-gradient(90deg, var(--brand-hi), var(--gold)); transform: scaleX(0); transform-origin: left; pointer-events: none;
   box-shadow: 0 0 10px rgb(243 194 122 / .6);
 }
-.reveal { opacity: 0; transform: translateY(34px); transition: opacity .9s var(--ease), transform .9s var(--ease); transition-delay: var(--reveal-delay, 0ms); }
-.reveal.is-visible { opacity: 1; transform: none; }
+/* "main" in the selector so this wins over component hover transitions (e.g. step cards) */
+main .reveal { opacity: 0; transform: translateY(34px); transition: opacity .9s var(--ease), transform .9s var(--ease); transition-delay: var(--reveal-delay, 0ms); }
+main .reveal.is-visible { opacity: 1; transform: none; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
   .marquee-track { animation: none !important; }
   .marquee { overflow-x: auto; }
-  .reveal { opacity: 1; transform: none; }
+  main .reveal { opacity: 1; transform: none; }
 }
 
 @theme inline {

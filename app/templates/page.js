@@ -35,8 +35,8 @@ export default function TemplatesPage() {
       <section className="section posters">
         <div className="wrap">
           <div className="cat-grid">
-            {CATEGORIES.map((c) => (
-              <CategoryCard key={c.name} category={c} HeadingTag="h2" sizes="(min-width: 1100px) 270px, (min-width: 720px) 30vw, 45vw" />
+            {CATEGORIES.map((c, i) => (
+              <CategoryCard key={c.name} category={c} lcp={i === 0} HeadingTag="h2" sizes="(min-width: 1100px) 270px, (min-width: 720px) 30vw, 45vw" />
             ))}
           </div>
           <div className="note-card">
