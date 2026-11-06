@@ -15,7 +15,7 @@ export default function HowItWorksPage() {
   return (
     <>
       <section className="stage page-hero">
-        <div className="stage-bg" aria-hidden="true" />
+        <div className="stage-bg" aria-hidden="true"><span className="stage-glow" /></div>
         <div className="wrap hero-big">
           <div>
             <p className="eyebrow">4 steps · No editing</p>

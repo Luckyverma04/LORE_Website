@@ -49,7 +49,7 @@ function Phone() {
   return (
     <group>
       {/* body: dark maroon metal with a clear lacquer, so the studio lights glint on the edges */}
-      <RoundedBox args={[2.6, 4.45, 0.24]} radius={0.3} smoothness={6} castShadow>
+      <RoundedBox args={[2.6, 4.45, 0.24]} radius={0.3} smoothness={4}>
         <meshPhysicalMaterial color="#1b0d0b" metalness={0.85} roughness={0.28} clearcoat={1} clearcoatRoughness={0.06} />
       </RoundedBox>
       {/* the real app screen */}
@@ -132,10 +132,21 @@ function Cards({ progressRef }) {
 function Rig({ progressRef, children }) {
   const group = useRef();
   const phone = useRef();
+  // Hero height is measured once (and on resize), never inside the render loop:
+  // reading layout every frame while scrolling causes jank.
+  const heroH = useRef(1);
+  useEffect(() => {
+    const measure = () => {
+      const hero = document.querySelector(".hero");
+      heroH.current = hero ? hero.offsetHeight : window.innerHeight;
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
   useFrame((state, dt) => {
-    // scroll progressRef of the hero (0 at the top, 1 when the hero has scrolled away)
-    const hero = document.querySelector(".hero");
-    const h = hero ? hero.offsetHeight : window.innerHeight;
+    // scroll progress of the hero (0 at the top, 1 when the hero has scrolled away)
+    const h = heroH.current;
     const target = Math.min(1, Math.max(0, window.scrollY / h));
     progressRef.current = THREE.MathUtils.damp(progressRef.current, target, 6, dt);
 
@@ -182,8 +193,7 @@ function Scene({ onReady }) {
         penumbra={0.9}
         attenuation={9}
         anglePower={5}
-        opacity={0.55}
-        castShadow
+        opacity={0.5}
       />
       <primitive object={target} position={[0, -1, 0]} />
       <pointLight position={[-4.5, 1, -2.5]} color={MAROON} intensity={45} distance={14} />
@@ -196,9 +206,9 @@ function Scene({ onReady }) {
       </Rig>
       <Cards progressRef={progressRef} />
 
-      <Sparkles count={70} scale={[9, 7, 5]} size={2.2} speed={0.35} opacity={0.7} color={GOLD} />
+      <Sparkles count={40} scale={[8, 6, 4]} size={2.2} speed={0.3} opacity={0.7} color={GOLD} />
 
-      <ContactShadows position={[0, -2.72, 0]} opacity={0.75} scale={9} blur={2.4} far={5} resolution={256} color="#000000" />
+      <ContactShadows position={[0, -2.72, 0]} opacity={0.7} scale={9} blur={2.4} far={5} resolution={128} frames={1} color="#000000" />
 
       {/* studio lights that only show up as reflections on the phone */}
       <Environment resolution={256} frames={1}>
@@ -239,11 +249,10 @@ export default function StageScene({ onReady, onFail }) {
     <div ref={host} style={{ position: "absolute", inset: 0 }}>
       <Boundary onFail={onFail}>
         <Canvas
-          shadows
-          dpr={[1, 1.5]}
+          dpr={[1, 1.25]}
           frameloop={visible ? "always" : "never"}
           camera={{ position: [0, 0.3, 14], fov: 34 }}
-          gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+          gl={{ antialias: true, alpha: true, powerPreference: "high-performance", stencil: false }}
           onCreated={({ gl }) => gl.setClearColor(0x000000, 0)}
         >
           <Suspense fallback={null}>

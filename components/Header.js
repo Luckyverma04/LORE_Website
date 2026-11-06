@@ -1,9 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
 import NavLink from "./NavLink";
+import HeaderState from "./HeaderState";
 import { NAV, LOGO, PLAY_URL } from "@/lib/site";
 
-// Floating maroon glass capsule. Logo comes from LOGO in lib/site.js
+// Transparent over the hero; turns into the maroon glass bar after you scroll (HeaderState).
+// Logo comes from LOGO in lib/site.js
 // (an image if LOGO.image is set, otherwise the text wordmark with a small gold star).
 export default function Header() {
   return (
@@ -34,6 +36,7 @@ export default function Header() {
           </ul>
         </nav>
       </div>
+      <HeaderState />
     </header>
   );
 }

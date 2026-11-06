@@ -31,6 +31,7 @@
   --line-2: rgb(255 236 220 / .2);
   --radius: 22px;
   --gutter: 20px;
+  --hdr-h: 72px;
   --ease: cubic-bezier(.2, .7, .1, 1);
   --font-display: var(--font-serif, "Instrument Serif"), "Times New Roman", serif;
   --font-text: var(--font-inter, "Inter"), system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -86,51 +87,60 @@ img { max-width: 100%; height: auto; }
 .eyebrow::before { content: ""; width: 28px; height: 1px; background: currentColor; }
 .kicker { font-family: var(--font-text); font-size: .82rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); margin: 26px 0 10px; }
 
-/* Film grain over the whole site (tiny SVG noise, no image request) */
-.grain {
-  position: fixed; inset: 0; z-index: 90; pointer-events: none; opacity: .07;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-/* ───────── Header: floating maroon glass capsule ───────── */
+/* ───────── Header: transparent over the hero, becomes a maroon glass bar once you scroll ─────────
+   (data-scrolled is set by components/HeaderState.js) */
 .header {
   --hdr-bg: 163 50 42;
   --hdr-ink: #fff8f1;
-  position: sticky; top: 0; z-index: 60; padding: 10px var(--gutter) 0;
-  pointer-events: none;
+  position: fixed; top: 0; left: 0; right: 0; z-index: 60;
+  border-bottom: 1px solid transparent;
+  transition: background-color .35s ease, border-color .35s ease, box-shadow .35s ease;
+}
+:is(.header[data-scrolled], body:has(main > .paper:first-child) .header) {
+  background: rgb(var(--hdr-bg) / .94);
+  border-bottom-color: rgb(255 255 255 / .12);
+  box-shadow: 0 14px 34px -24px rgb(0 0 0 / .9);
+}
+@supports (backdrop-filter: blur(1px)) {
+  :is(.header[data-scrolled], body:has(main > .paper:first-child) .header) { background: rgb(var(--hdr-bg) / .9); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
 }
 .header-bar {
-  pointer-events: auto;
-  max-width: 1200px; margin: 0 auto; padding: 6px 6px 6px 18px; min-height: 56px;
-  display: flex; align-items: center; justify-content: space-between; gap: 10px;
-  background: rgb(var(--hdr-bg) / .78);
-  -webkit-backdrop-filter: saturate(160%) blur(18px);
-  backdrop-filter: saturate(160%) blur(18px);
-  border: 1px solid rgb(255 255 255 / .16); border-radius: 999px;
-  box-shadow: 0 18px 40px -22px rgb(0 0 0 / .9), inset 0 1px 0 rgb(255 255 255 / .14);
+  max-width: 1200px; margin: 0 auto; padding: 0 var(--gutter); height: 72px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  transition: height .35s ease;
 }
+.header[data-scrolled] .header-bar { height: 60px; }
 .logo {
-  display: inline-flex; align-items: center; gap: 7px; text-decoration: none; color: var(--hdr-ink);
-  font-family: var(--font-display); font-size: 1.85rem; line-height: 1; letter-spacing: .04em;
+  display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: var(--hdr-ink);
+  font-family: var(--font-display); font-size: 2rem; line-height: 1; letter-spacing: .06em;
 }
 .logo:hover { color: var(--hdr-ink); }
 .logo-star { width: 13px; height: 13px; color: var(--gold); transition: transform .6s var(--ease); }
 .logo:hover .logo-star { transform: rotate(144deg) scale(1.15); }
-.nav { list-style: none; margin: 0; padding: 0; display: flex; align-items: center; gap: 2px; }
-.nav a {
-  display: inline-block; padding: 9px 13px; border-radius: 999px; color: var(--hdr-ink);
-  font-size: .92rem; font-weight: 600; text-decoration: none; transition: background .25s, color .25s;
+.nav { list-style: none; margin: 0; padding: 0; display: flex; align-items: center; gap: 4px; }
+.nav a:not(.nav-cta) {
+  position: relative; display: inline-block; padding: 10px 12px; color: var(--hdr-ink);
+  font-size: .95rem; font-weight: 500; text-decoration: none;
 }
-.nav a:hover, .nav a:focus-visible, .nav a[aria-current="page"] { background: rgb(255 248 241 / .14); color: #fff; }
-.nav-cta { display: none !important; }
-@media (min-width: 760px) {
-  .nav-cta { display: inline-flex !important; margin-left: 6px; background: var(--hdr-ink) !important; color: rgb(var(--hdr-bg)) !important; }
-  .nav-cta:hover { background: #fff !important; }
+.nav a:not(.nav-cta)::after {
+  content: ""; position: absolute; left: 12px; right: 12px; bottom: 4px; height: 1px; background: var(--gold);
+  transform: scaleX(0); transform-origin: right; transition: transform .45s var(--ease);
 }
+.header[data-scrolled] .nav a:not(.nav-cta)::after { background: var(--hdr-ink); }
+.nav a:not(.nav-cta):hover::after, .nav a:not(.nav-cta):focus-visible::after, .nav a[aria-current="page"]::after { transform: scaleX(1); transform-origin: left; }
+.nav-cta {
+  display: none; margin-left: 10px; padding: 10px 18px; border-radius: 999px; text-decoration: none;
+  background: var(--gold); color: #1a0f0c; font-size: .9rem; font-weight: 700;
+  transition: background .25s, transform .3s var(--ease);
+}
+.nav-cta:hover { background: var(--gold-2); color: #1a0f0c; transform: translateY(-1px); }
+.header[data-scrolled] .nav-cta { background: var(--hdr-ink); color: rgb(var(--hdr-bg)); }
+@media (min-width: 760px) { .nav-cta { display: inline-block; } }
 @media (max-width: 480px) {
-  .header-bar { padding-left: 14px; }
-  .logo { font-size: 1.5rem; }
-  .nav a { padding: 8px 8px; font-size: .84rem; }
+  .header-bar { height: 62px; }
+  .logo { font-size: 1.6rem; }
+  .nav a:not(.nav-cta) { padding: 8px 7px; font-size: .86rem; }
+  .nav a:not(.nav-cta)::after { left: 7px; right: 7px; }
 }
 
 /* ───────── Buttons ───────── */
@@ -173,20 +183,30 @@ img { max-width: 100%; height: auto; }
 
 /* ═════════════ HERO (Home): the stage ═════════════ */
 .stage { position: relative; isolation: isolate; overflow: hidden; }
-.stage-bg { position: absolute; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+.stage-bg {
+  position: absolute; inset: 0; z-index: -1; pointer-events: none; overflow: hidden;
+  /* film grain (tiny SVG noise, no image request) */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+/* soft light that follows the mouse (desktop). Moved with transform by components/StageLight.js, so no repaint. */
+.stage-glow {
+  position: absolute; left: 0; top: 0; width: 640px; height: 420px; z-index: 1; opacity: 0;
+  background: radial-gradient(closest-side, rgb(224 87 74 / .22), transparent);
+  transition: opacity .6s ease; will-change: transform;
+}
+.stage-glow.is-on { opacity: 1; }
 /* spotlight cone from the top */
 .stage-bg::before {
   content: ""; position: absolute; left: 50%; top: -12%; width: min(1100px, 160vw); height: 120%;
   transform: translateX(-50%);
-  background: conic-gradient(from 180deg at 50% 0%, transparent 158deg, rgb(243 194 122 / .16) 172deg, rgb(255 223 174 / .22) 180deg, rgb(243 194 122 / .16) 188deg, transparent 202deg);
-  filter: blur(18px);
+  /* a tall soft ellipse: looks like a light cone, no hard edges and no blur filter needed */
+  background: radial-gradient(28% 85% at 50% 0%, rgb(255 223 174 / .2), rgb(243 194 122 / .08) 55%, transparent 100%);
   -webkit-mask-image: linear-gradient(180deg, #000 30%, transparent 92%); mask-image: linear-gradient(180deg, #000 30%, transparent 92%);
 }
 /* maroon glow on the floor + light following the mouse (--mx/--my set by components/StageLight.js) */
 .stage-bg::after {
   content: ""; position: absolute; inset: 0;
   background:
-    radial-gradient(600px 380px at var(--mx, 70%) var(--my, 40%), rgb(224 87 74 / .2), transparent 70%),
     radial-gradient(70% 45% at 50% 105%, rgb(163 50 42 / .55), transparent 70%),
     radial-gradient(40% 30% at 10% 10%, rgb(243 194 122 / .07), transparent 70%);
 }
@@ -198,8 +218,9 @@ img { max-width: 100%; height: auto; }
   -webkit-mask-image: linear-gradient(180deg, transparent, #000 60%); mask-image: linear-gradient(180deg, transparent, #000 60%);
 }
 
-.hero { padding: 28px 0 70px; min-height: calc(100svh - 66px); display: flex; align-items: center; }
-@media (min-width: 1024px) { .hero { padding: 40px 0 90px; } }
+/* the header floats over the page, so each first section adds its height (--hdr-h) on top */
+.hero { padding: calc(var(--hdr-h) + 20px) 0 70px; min-height: 100svh; display: flex; align-items: center; }
+@media (min-width: 1024px) { .hero { padding: calc(var(--hdr-h) + 32px) 0 90px; } }
 .hero-grid { display: grid; gap: 40px; align-items: center; width: 100%; }
 @media (min-width: 1024px) { .hero-grid { grid-template-columns: 1.08fr .92fr; gap: 24px; min-height: 600px; } }
 .hero-copy { position: relative; z-index: 2; }
@@ -216,7 +237,6 @@ img { max-width: 100%; height: auto; }
   display: inline-flex; align-items: center; gap: 8px; margin: 0 0 22px; padding: 9px 16px;
   background: rgb(255 248 241 / .07); border: 1px solid var(--line-2); border-radius: 20px 20px 20px 6px;
   font-weight: 600; font-size: .95rem; color: var(--ink);
-  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
 }
 .bubble-dot { width: 8px; height: 8px; border-radius: 50%; background: #39d47a; box-shadow: 0 0 0 4px rgb(57 212 122 / .18); }
 
@@ -278,14 +298,11 @@ img { max-width: 100%; height: auto; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
 /* WebGL scene layer (components/three/StageCanvas.js). The CSS stage fades out when it is ready. */
-.webgl-layer {
-  position: absolute; inset: -8% -12% -4% -4%; z-index: 0; opacity: 0; pointer-events: none; transition: opacity 1.2s var(--ease);
-  /* soft edges, so the scene melts into the stage instead of ending in a box */
-  -webkit-mask-image: radial-gradient(closest-side, #000 62%, transparent 100%);
-  mask-image: radial-gradient(closest-side, #000 62%, transparent 100%);
-}
+.webgl-layer { position: absolute; inset: -8% -12% -4% -4%; z-index: 0; opacity: 0; pointer-events: none; transition: opacity 1.2s var(--ease); }
 .hero-visual[data-webgl="ready"] .webgl-layer { opacity: 1; }
-.hero-visual[data-webgl="ready"] .css-stage { opacity: 0; pointer-events: none; }
+/* once the WebGL stage shows, the CSS stage is hidden and its animations stop (no double work) */
+.hero-visual[data-webgl="ready"] .css-stage { opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .9s var(--ease), visibility 0s .9s; }
+.hero-visual[data-webgl="ready"] .css-stage * { animation-play-state: paused; }
 
 /* Older 3D components (How it works, Templates) */
 .hero3d { position: relative; width: 100%; height: 520px; }
@@ -304,8 +321,10 @@ img { max-width: 100%; height: auto; }
 .flow3d-tag.is-active .flow3d-num { background: #1a0f0c; color: var(--gold); }
 
 /* Inner-page heroes (How it works, Templates, FAQ) */
-.page-hero { padding: 40px 0 72px; }
-@media (min-width: 1024px) { .page-hero { padding: 56px 0 100px; } }
+.page-hero { padding: calc(var(--hdr-h) + 40px) 0 72px; }
+@media (min-width: 1024px) { .page-hero { padding: calc(var(--hdr-h) + 56px) 0 100px; } }
+.section.page-faq { padding-top: calc(var(--hdr-h) + 48px); }
+@media (min-width: 900px) { .section.page-faq { padding-top: calc(var(--hdr-h) + 72px); } }
 .hero-big { display: grid; gap: 32px; align-items: center; }
 @media (min-width: 1024px) {
   .hero-big { grid-template-columns: 1fr 1fr; min-height: 560px; gap: 48px; }
@@ -314,10 +333,6 @@ img { max-width: 100%; height: auto; }
 .hero-big .lead { margin-bottom: 30px; }
 .page-hero h1 { font-size: clamp(3rem, 10vw, 6rem); }
 
-/* Below-the-fold sections: the browser skips their layout, paint and image loading until they come near
-   the screen. Big win for mobile LCP. contain-intrinsic-size keeps the scrollbar steady. */
-.cv { content-visibility: auto; contain-intrinsic-size: auto 1100px; }
-
 /* ═════════════ Section headings: split layout ═════════════ */
 .sec-head { display: grid; gap: 18px; margin-bottom: 48px; }
 .sec-head h2 { margin: 0; }
@@ -325,7 +340,6 @@ img { max-width: 100%; height: auto; }
 @media (min-width: 900px) {
   .sec-head { grid-template-columns: 1.2fr 1fr; align-items: end; gap: 48px; margin-bottom: 64px; }
 }
-.sec-num { font-family: var(--font-text); font-size: .78rem; font-weight: 700; letter-spacing: .2em; color: var(--gold); display: block; margin-bottom: 18px; }
 
 /* ═════════════ "Ek photo, kai andaaz": cinema film strip ═════════════ */
 .film { position: relative; overflow: hidden; background: linear-gradient(180deg, var(--bg), var(--bg-2) 50%, var(--bg)); }
@@ -333,9 +347,8 @@ img { max-width: 100%; height: auto; }
   position: absolute; left: 0; right: 0; top: 50%; z-index: 0; white-space: nowrap; pointer-events: none;
   font-family: var(--font-display); font-style: italic; font-size: clamp(6rem, 20vw, 16rem); line-height: 1;
   color: transparent; -webkit-text-stroke: 1px rgb(243 194 122 / .18);
-  transform: translateY(-10%); animation: words 60s linear infinite;
+  transform: translateY(-10%);
 }
-@keyframes words { to { transform: translate(-50%, -10%); } }
 .film-tilt { position: relative; z-index: 1; perspective: 1200px; padding: 30px 0; }
 .marquee {
   position: relative; overflow: hidden; padding: 26px 0;
@@ -348,8 +361,7 @@ img { max-width: 100%; height: auto; }
   content: ""; position: absolute; left: 0; right: 0; height: 12px; z-index: 2;
   background-image: repeating-linear-gradient(90deg, transparent 0 14px, rgb(244 235 226 / .14) 14px 28px);
   background-size: 28px 12px;
-  -webkit-mask-image: radial-gradient(circle, #000 0, #000 100%);
-  border-radius: 2px;
+border-radius: 2px;
 }
 .marquee::before { top: 7px; }
 .marquee::after { bottom: 7px; }
@@ -441,7 +453,7 @@ img { max-width: 100%; height: auto; }
 .paper a { color: var(--brand); }
 .paper .link-arrow { color: var(--paper-ink); border-color: rgb(29 21 18 / .2); }
 .paper .link-arrow:hover { color: var(--brand); border-color: var(--brand); }
-.paper .eyebrow, .paper .sec-num { color: var(--brand); }
+.paper .eyebrow { color: var(--brand); }
 .paper :focus-visible { outline-color: var(--brand); }
 .faq-layout { display: grid; gap: 36px; }
 @media (min-width: 960px) {
@@ -463,7 +475,7 @@ img { max-width: 100%; height: auto; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
-  .marquee-track, .film-words { animation: none !important; }
+  .marquee-track { animation: none !important; }
   .marquee { overflow-x: auto; }
   .reveal { opacity: 1; transform: none; }
 }

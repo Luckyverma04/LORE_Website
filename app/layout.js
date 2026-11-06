@@ -47,7 +47,6 @@ export default function RootLayout({ children }) {
         <Header />
         <main>{children}</main>
         <Footer />
-        <div className="grain" aria-hidden="true" />
         <ScrollReveal />
         <StageLight />
       </body>

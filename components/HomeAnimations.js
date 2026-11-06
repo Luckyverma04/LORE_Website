@@ -3,12 +3,12 @@
 import { useEffect } from "react";
 
 /**
- * Home page motion: Lenis smooth scroll + GSAP / ScrollTrigger.
+ * Home page motion: GSAP / ScrollTrigger on top of the browser's own (native) scrolling.
  *
  * Rules that keep SEO and speed safe:
  * - All content is in the server HTML and fully visible without JavaScript.
  * - Nothing runs until React has hydrated the page (avoids hydration mismatch errors).
- * - GSAP and Lenis are loaded with dynamic import AFTER hydration, so they never block the first paint.
+ * - GSAP is loaded with dynamic import AFTER hydration, so it never blocks the first paint.
  * - The "What is Lore?" paragraph (the LCP element) is never hidden or delayed.
  * - prefers-reduced-motion: nothing runs.
  */
@@ -33,18 +33,7 @@ export default function HomeAnimations() {
       gsap.registerPlugin(ScrollTrigger);
       await pause();
 
-      // ---------- Smooth scroll (desktop mouse wheel only; phones already scroll smoothly) ----------
-      let lenis = null;
-      let raf = null;
-      if (isDesktop) {
-        const { default: Lenis } = await import("lenis");
-        if (cancelled) return;
-        lenis = new Lenis({ duration: 1.1, smoothWheel: true });
-        lenis.on("scroll", ScrollTrigger.update);
-        raf = (t) => lenis.raf(t * 1000);
-        gsap.ticker.add(raf);
-        gsap.ticker.lagSmoothing(0);
-      }
+      // Native scroll (no smooth-scroll library): fastest and most responsive on every device.
 
       // ---------- Scroll progress bar (sits right under the sticky header) ----------
       const bar = document.querySelector(".scroll-progress");
@@ -69,8 +58,6 @@ export default function HomeAnimations() {
         off.forEach((f) => f());
         ro?.disconnect();
         ctx.revert();
-        if (raf) gsap.ticker.remove(raf);
-        lenis?.destroy();
       };
       const step = async (fn) => {
         if (cancelled) return;
@@ -90,7 +77,7 @@ export default function HomeAnimations() {
 
       await step(() => {
         // ---------- Section headings and intro lines ----------
-        gsap.utils.toArray("main section:not(.hero) h2, main .sec-num").forEach((h) => {
+        gsap.utils.toArray("main section:not(.hero) h2").forEach((h) => {
           gsap.from(h, { yPercent: 35, opacity: 0, duration: 1.1, ease: "expo.out", scrollTrigger: { trigger: h, start: "top 90%", once: true } });
         });
         gsap.utils.toArray("main section:not(.hero) .lead").forEach((p) => {
@@ -159,7 +146,7 @@ export default function HomeAnimations() {
         });
 
         // ---------- Closing curtain: the giant footer word rises ----------
-        gsap.from("footer p[aria-hidden]", { yPercent: 30, opacity: 0.2, ease: "none", scrollTrigger: { trigger: "footer", start: "top bottom", end: "bottom bottom", scrub: true } });
+        gsap.from("footer p[aria-hidden]", { opacity: 0.15, ease: "none", scrollTrigger: { trigger: "footer", start: "top bottom", end: "bottom bottom", scrub: true } });
 
         // ---------- FAQ ----------
         gsap.from("main details", {
@@ -209,17 +196,6 @@ export default function HomeAnimations() {
           off.push(() => hero.removeEventListener("mousemove", move));
         }
       }
-
-      // Sections use content-visibility:auto, so their real height is known only when they render.
-      // Re-measure the scroll triggers whenever the page height changes.
-      let refreshTimer;
-      const mainRo = new ResizeObserver(() => {
-        clearTimeout(refreshTimer);
-        refreshTimer = setTimeout(() => ScrollTrigger.refresh(), 150);
-      });
-      const main = document.querySelector("main");
-      if (main) mainRo.observe(main);
-      off.push(() => { mainRo.disconnect(); clearTimeout(refreshTimer); });
 
       await pause();
       if (!cancelled) ScrollTrigger.refresh();

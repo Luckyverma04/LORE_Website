@@ -127,12 +127,11 @@ const STEPS = [
 
 export default function StepJourney() {
   return (
-    <section className={`section stage cv ${styles.section}`} aria-labelledby="kaise-h">
-      <div className="stage-bg" aria-hidden="true" />
+    <section className={`section stage ${styles.section}`} aria-labelledby="kaise-h">
+      <div className="stage-bg" aria-hidden="true"><span className="stage-glow" /></div>
       <div className="wrap">
         <div className="sec-head">
           <div>
-            <span className="sec-num" aria-hidden="true">03 — How it works</span>
             <h2 id="kaise-h">Kaise <em>banta</em> hai?</h2>
           </div>
           <p className="lead">Selfie se viral video tak, 4 steps mein.</p>

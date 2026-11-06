@@ -39,7 +39,7 @@ export default function HomePage() {
 
       {/* Hero: H1 + 40–60 word answer + Play button (all in the first screen on mobile) */}
       <section className="hero stage">
-        <div className="stage-bg" aria-hidden="true" />
+        <div className="stage-bg" aria-hidden="true"><span className="stage-glow" /></div>
         <div className="stage-floor" aria-hidden="true" />
         <div className="wrap hero-grid">
           <div className="hero-copy">
@@ -68,11 +68,10 @@ export default function HomePage() {
       </section>
 
       {/* Real style examples from the app on a cinema film strip (images from public/showcase) */}
-      <section className="section film cv">
+      <section className="section film">
         <div className="film-words" aria-hidden="true">Ek photo · Kai andaaz · Ek photo · Kai andaaz ·</div>
         <div className="wrap sec-head">
           <div>
-            <span className="sec-num" aria-hidden="true">01 — Showcase</span>
             <h2>Ek photo, <em>kai andaaz</em></h2>
           </div>
           <p className="lead">Lore app ke asli examples: ek hi photo se 70s Polaroid, Low Poly Art ya Desi Superwoman.</p>
@@ -83,11 +82,10 @@ export default function HomePage() {
       </section>
 
       {/* App preview: real screenshots on a curved wall */}
-      <section className="section showroom cv">
+      <section className="section showroom">
         <div className="wrap">
           <div className="sec-head">
             <div>
-              <span className="sec-num" aria-hidden="true">02 — The app</span>
               <h2>App andar se <em>aisi</em> dikhti hai</h2>
             </div>
             <p className="lead">Asli app ke screens: Trending, Video aur Image templates, aur Devotion, Patriotic, Events, Friends jaisi categories.</p>
@@ -100,11 +98,10 @@ export default function HomePage() {
       <StepJourney />
 
       {/* Categories: a scrollable row of template posters, like the app home screen */}
-      <section className="section posters cv">
+      <section className="section posters">
         <div className="wrap">
           <div className="sec-head">
             <div>
-              <span className="sec-num" aria-hidden="true">04 — Templates</span>
               <h2>Har mood ka <em>template</em></h2>
             </div>
             <div>
@@ -121,10 +118,9 @@ export default function HomePage() {
       </section>
 
       {/* FAQ (5+ questions, matches FAQPage schema) on cream paper */}
-      <section className="section paper cv">
+      <section className="section paper">
         <div className="wrap faq-layout">
           <div className="faq-side">
-            <span className="sec-num" aria-hidden="true">05 — FAQ</span>
             <h2>Lore ke baare mein <em>sawal</em></h2>
             <p>Seedhe, chhote jawab. Aur jaanna hai to saare sawal ek jagah padho.</p>
             <Link prefetch={false} href="/faq" className="link-arrow">Saare sawal dekho <span aria-hidden="true">→</span></Link>

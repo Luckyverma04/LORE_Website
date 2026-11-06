@@ -18,6 +18,9 @@ export default function Footer() {
       </section>
 
       <footer className={styles.footer}>
+        {/* main area: the giant "Lore" fills its background and ends right above the copyright line */}
+        <div className={styles.main}>
+        <p className={styles.giant} aria-hidden="true">Lore</p>
         <div className={`wrap ${styles.cols}`}>
           <div>
             <p className={styles.brand}>LORE</p>
@@ -40,7 +43,7 @@ export default function Footer() {
             </ul>
           </div>
         </div>
-        <p className={styles.giant} aria-hidden="true">Lore</p>
+        </div>
         <div className={`wrap ${styles.bottom}`}>
           <p>© 2026 Lore. {APP_NAME} is available on Google Play for Android.</p>
         </div>
