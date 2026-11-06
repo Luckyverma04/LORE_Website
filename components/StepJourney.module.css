@@ -1,65 +1,62 @@
-/* "Kaise banta hai?" on Home – 4-step visual journey */
+/* "Kaise banta hai?" on Home – a 4-scene storyboard on the dark stage */
 .section {
-  --cream: #f8f3ef;
-  --accent: #b3332a;
-  --card: #fffdfb;
-  --ink: #1d1a19;
-  --muted: #6b625e;
-  background: var(--cream);
-  padding: 64px 0;
+  --accent: #e0574a;
+  background: #110a09;
 }
 
-.head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 24px; margin-bottom: 28px; }
-.head h2 { margin: 0; font-size: clamp(1.8rem, 5vw, 2.6rem); }
-.head p { margin: 0; color: var(--muted); font-size: 1.05rem; }
-
-/* Grid: 2 x 2 on phones, one row of 4 on desktop */
-.journey { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; position: relative; }
+/* Grid: 2 x 2 on phones, one row of 4 on desktop (cards step down like a staircase) */
+.journey { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; position: relative; perspective: 1200px; }
 @media (min-width: 960px) {
-  .journey { grid-template-columns: repeat(4, 1fr); gap: 20px; }
-  /* arrow between cards, nudging forward (left to right) */
-  .step:not(:last-child)::after {
-    content: "→"; position: absolute; z-index: 3; right: -19px; top: 149px;
-    width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center;
-    background: var(--accent); color: #fff; font-weight: 900; font-size: 15px;
-    box-shadow: 0 6px 14px -6px rgb(179 51 42 / .7);
+  .journey { grid-template-columns: repeat(4, 1fr); gap: 22px; }
+  .step:nth-child(2) { margin-top: 48px; }
+  .step:nth-child(3) { margin-top: 96px; }
+  .step:nth-child(4) { margin-top: 144px; }
+  /* glowing thread that links the scenes */
+  .journey::before {
+    content: ""; position: absolute; left: 10%; right: 6%; top: 150px; height: 160px; z-index: 0; pointer-events: none;
+    background: linear-gradient(90deg, transparent, rgb(243 194 122 / .5), transparent) center / 100% 1px no-repeat;
+    transform: rotate(11deg); transform-origin: left;
   }
 }
-@media (min-width: 960px) and (prefers-reduced-motion: no-preference) {
-  .step:not(:last-child)::after { animation: nudge 1.6s ease-in-out infinite; }
-}
-@keyframes nudge { 50% { translate: 4px 0; } }
 
 .step {
-  position: relative; z-index: 1; display: flex; flex-direction: column;
-  background: var(--card); border: 1px solid #efe5de; border-radius: 22px;
-  padding: 14px 14px 18px; box-shadow: 0 10px 30px -22px rgb(80 30 20 / .45);
-  transition: transform .25s ease, box-shadow .25s ease;
+  position: relative; z-index: 1; display: flex; flex-direction: column; overflow: hidden; isolation: isolate;
+  background: linear-gradient(180deg, rgb(255 236 220 / .06), rgb(255 236 220 / .02));
+  border: 1px solid rgb(255 236 220 / .12); border-radius: 26px;
+  padding: 12px 12px 20px;
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  transition: transform .6s cubic-bezier(.2,.7,.1,1), border-color .4s, box-shadow .6s;
 }
-.step:hover { transform: translateY(-4px); box-shadow: 0 18px 36px -22px rgb(80 30 20 / .55); }
-.feature { background: #fff; border-color: rgb(179 51 42 / .25); }
+.step:hover { transform: translateY(-8px); border-color: rgb(243 194 122 / .45); box-shadow: 0 30px 60px -30px rgb(0 0 0 / .9), 0 0 60px -30px rgb(243 194 122 / .35); }
+.feature { border-color: rgb(243 194 122 / .3); }
 
+.bigNum {
+  position: absolute; right: 10px; top: -10px; z-index: -1;
+  font-family: var(--font-display); font-style: italic; font-size: 7rem; line-height: 1;
+  color: transparent; -webkit-text-stroke: 1px rgb(243 194 122 / .25);
+}
+@media (min-width: 960px) { .bigNum { font-size: 8.5rem; } }
 
 .visual {
   position: relative; height: 222px; display: grid; place-items: center;
-  background: radial-gradient(120% 80% at 50% 100%, #f3e6de 0, transparent 70%);
-  border-radius: 16px; margin-bottom: 14px; overflow: hidden;
+  background: radial-gradient(90% 70% at 50% 100%, rgb(224 87 74 / .35) 0, transparent 70%), radial-gradient(60% 50% at 50% 0%, rgb(243 194 122 / .12), transparent 70%);
+  border-radius: 18px; margin-bottom: 16px; overflow: hidden;
 }
 @media (min-width: 960px) { .visual { height: 300px; } }
 
 .badge {
-  align-self: flex-start; font-size: .78rem; font-weight: 800; letter-spacing: .06em; color: var(--accent);
-  background: rgb(179 51 42 / .08); border: 1px solid rgb(179 51 42 / .2); border-radius: 999px; padding: 3px 10px; margin-bottom: 8px;
+  align-self: flex-start; font-size: .72rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: #f3c27a;
+  margin: 0 4px 6px;
 }
-.step h3 { font-size: 1.05rem; margin: 0 0 4px; }
-.step p { margin: 0; color: var(--muted); font-size: .9rem; line-height: 1.45; }
-@media (min-width: 960px) { .step h3 { font-size: 1.2rem; } .step p { font-size: .95rem; } }
+.step h3 { font-family: var(--font-display); font-weight: 400; font-size: 1.55rem; line-height: 1.05; margin: 0 4px 6px; color: #f7ede4; }
+.step p { margin: 0 4px; color: #c4b3a8; font-size: .9rem; line-height: 1.45; }
+@media (min-width: 960px) { .step h3 { font-size: 1.85rem; } .step p { font-size: .95rem; } }
 
-.more { margin: 24px 0 0; font-weight: 700; }
-.more a { color: var(--accent); }
+.more { margin: 40px 0 0; }
 
 /* ---------- Phone mockup (CSS only) ---------- */
 .phone {
+  --ink: #1d1a19; --muted: #6b625e; /* light app UI inside the phone mockups */
   position: relative; width: 98px; aspect-ratio: 9 / 18.5; padding: 6px;
   background: #1c1918; border-radius: 22px; transform: rotate(var(--tilt, 0deg));
   box-shadow: 0 18px 30px -16px rgb(40 15 10 / .55), inset 0 0 0 1.5px #3a3533;

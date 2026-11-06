@@ -90,22 +90,25 @@ export default function HomeAnimations() {
 
       await step(() => {
         // ---------- Section headings and intro lines ----------
-        gsap.utils.toArray("main section:not(.hero) h2").forEach((h) => {
-          gsap.from(h, { y: 40, opacity: 0, duration: 0.8, ease: "power3.out", scrollTrigger: { trigger: h, start: "top 88%", once: true } });
+        gsap.utils.toArray("main section:not(.hero) h2, main .sec-num").forEach((h) => {
+          gsap.from(h, { yPercent: 35, opacity: 0, duration: 1.1, ease: "expo.out", scrollTrigger: { trigger: h, start: "top 90%", once: true } });
         });
         gsap.utils.toArray("main section:not(.hero) .lead").forEach((p) => {
           gsap.from(p, { y: 24, opacity: 0, duration: 0.8, delay: 0.1, ease: "power3.out", scrollTrigger: { trigger: p, start: "top 90%", once: true } });
         });
 
         // ---------- "Ek photo, kai andaaz" strip ----------
-        gsap.from(".marquee", { opacity: 0, scale: 0.94, duration: 1, ease: "power3.out", scrollTrigger: { trigger: ".marquee", start: "top 90%", once: true } });
+        gsap.from(".marquee", { opacity: 0, duration: 1, ease: "power3.out", scrollTrigger: { trigger: ".marquee", start: "top 90%", once: true } });
+        // the film strip straightens out as it crosses the screen; the big words drift the other way
+        gsap.fromTo(".marquee", { rotate: -8 }, { rotate: -1.5, ease: "none", scrollTrigger: { trigger: ".film", start: "top bottom", end: "bottom top", scrub: true } });
+        gsap.fromTo(".film-words", { xPercent: 0 }, { xPercent: -12, ease: "none", scrollTrigger: { trigger: ".film", start: "top bottom", end: "bottom top", scrub: true } });
       });
 
       await step(() => {
 
         // ---------- App screenshots: a deck of cards that opens as you scroll ----------
         const preview = document.querySelector(".preview");
-        const screens = gsap.utils.toArray(".preview .screen");
+        const screens = gsap.utils.toArray(".preview .shot");
         if (preview && screens.length) {
           screens.forEach((el) => (el.style.transition = "none")); // CSS hover transition would fight the scrub
           if (isDesktop) {
@@ -155,6 +158,9 @@ export default function HomeAnimations() {
           scrollTrigger: { trigger: ".cat-row", start: "top 88%", once: true },
         });
 
+        // ---------- Closing curtain: the giant footer word rises ----------
+        gsap.from("footer p[aria-hidden]", { yPercent: 30, opacity: 0.2, ease: "none", scrollTrigger: { trigger: "footer", start: "top bottom", end: "bottom bottom", scrub: true } });
+
         // ---------- FAQ ----------
         gsap.from("main details", {
           y: 30, opacity: 0, duration: 0.6, stagger: 0.07, ease: "power2.out",
@@ -197,12 +203,23 @@ export default function HomeAnimations() {
           const move = (e) => {
             const px = e.clientX / window.innerWidth - 0.5;
             const py = e.clientY / window.innerHeight - 0.5;
-            gsap.to(".hero3d-static-phone", { rotateY: px * 16, rotateX: -py * 10, transformPerspective: 900, duration: 0.8 });
+            gsap.to(".css-stage", { rotateY: px * 14, rotateX: -py * 8, duration: 0.9 });
           };
           hero.addEventListener("mousemove", move);
           off.push(() => hero.removeEventListener("mousemove", move));
         }
       }
+
+      // Sections use content-visibility:auto, so their real height is known only when they render.
+      // Re-measure the scroll triggers whenever the page height changes.
+      let refreshTimer;
+      const mainRo = new ResizeObserver(() => {
+        clearTimeout(refreshTimer);
+        refreshTimer = setTimeout(() => ScrollTrigger.refresh(), 150);
+      });
+      const main = document.querySelector("main");
+      if (main) mainRo.observe(main);
+      off.push(() => { mainRo.disconnect(); clearTimeout(refreshTimer); });
 
       await pause();
       if (!cancelled) ScrollTrigger.refresh();

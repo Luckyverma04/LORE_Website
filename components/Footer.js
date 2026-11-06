@@ -3,14 +3,15 @@ import PlayStoreButton from "./PlayStoreButton";
 import styles from "./Footer.module.css";
 import { NAV, APP_NAME, PLAY_URL, PLAY_FACTS } from "@/lib/site";
 
-
 export default function Footer() {
   return (
     <>
-      {/* Closing call to action: light band, so it stands apart from the maroon header */}
-      <section className={styles.cta}>
+      {/* Closing call to action: the maroon curtain with a gold spotlight */}
+      <section className={`stage ${styles.cta}`}>
+        <span className={styles.beam} aria-hidden="true" />
         <div className={`wrap ${styles.ctaText}`}>
-          <h2>Apne status ka <span>star</span> bano</h2>
+          <p className={styles.kick}>Lights · Camera · Aap</p>
+          <h2>Apne status ka <em>star</em> bano</h2>
           <p>Template chuno, photo daalo, video share karo.</p>
           <PlayStoreButton />
         </div>
@@ -39,6 +40,7 @@ export default function Footer() {
             </ul>
           </div>
         </div>
+        <p className={styles.giant} aria-hidden="true">Lore</p>
         <div className={`wrap ${styles.bottom}`}>
           <p>© 2026 Lore. {APP_NAME} is available on Google Play for Android.</p>
         </div>

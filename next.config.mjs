@@ -6,7 +6,8 @@ const nextConfig = {
   devIndicators: false,
   // Put the CSS straight into the HTML instead of separate render-blocking files,
   // so the first screen can paint without waiting for extra requests (faster FCP/LCP on mobile).
-  experimental: { inlineCss: true },
+  // inlineCss is off: with the bigger design CSS it was copied 3 times into every HTML page.
+  // experimental: { inlineCss: true },
   images: {
     // AVIF first (smallest files; Vercel encodes each size once and caches it), WebP as fallback.
     formats: ["image/avif", "image/webp"],

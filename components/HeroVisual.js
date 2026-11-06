@@ -1,27 +1,37 @@
-import { getImageProps } from "next/image";
-import Hero3DSlot from "./Hero3DSlot";
+import Image from "next/image";
+import HeroStageSlot from "./HeroStageSlot";
 
-// 1x1 transparent GIF: what phones "load" for the hidden desktop-only image (no network request).
-const BLANK = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+// The four Polaroids are real Lore template cards (files in /public/templates).
+const PRINTS = [
+  { src: "/templates/patriotic.webp", label: "Patriotic", cls: "pol-1" },
+  { src: "/templates/girl.webp", label: "Girl", cls: "pol-2" },
+  { src: "/templates/family.webp", label: "Family", cls: "pol-3" },
+  { src: "/templates/devotion.webp", label: "Devotion", cls: "pol-4" },
+];
 
 /**
- * Right side of the Home hero (desktop only).
- * - The static phone image is in the server HTML, so the browser finds it immediately
- *   (it is the LCP element on desktop). It loads eagerly with fetchpriority="high".
- * - <picture> + media query: only screens 1024px+ download it; phones get the blank GIF.
- * - After the first interaction, Hero3DSlot swaps in the 3D phone (CSS hides the static one).
+ * Right side of the Home hero.
+ * 1. CSS 3D stage (server HTML, every screen size): the real app screen in a tilted phone,
+ *    with Polaroid template prints floating around it. Costs no JavaScript.
+ * 2. On desktop, after the first interaction, HeroStageSlot loads the WebGL version of the
+ *    same stage and cross-fades to it.
  */
-export default function HeroVisual({ screen = "/screens/app-screen-1.webp", cards }) {
-  const { props } = getImageProps({ src: screen, alt: "", width: 540, height: 834, sizes: "210px" });
+export default function HeroVisual() {
   return (
     <div className="hero-visual">
-      <div className="hero3d-static-phone" aria-hidden="true">
-        <picture>
-          <source media="(min-width: 1024px)" srcSet={props.srcSet} sizes={props.sizes} />
-          <img src={BLANK} alt="" width={540} height={834} fetchPriority="high" loading="eager" decoding="async" />
-        </picture>
+      <div className="stage-ring" aria-hidden="true" />
+      <div className="css-stage" aria-hidden="true">
+        <div className="phone3d">
+          <Image src="/screens/app-screen-1.webp" alt="" width={540} height={834} sizes="(min-width: 1024px) 250px, 214px" quality={60} fetchPriority="low" />
+        </div>
+        {PRINTS.map((p) => (
+          <figure key={p.src} className={`polaroid ${p.cls}`}>
+            <Image src={p.src} alt="" width={230} height={325} sizes="(min-width: 1024px) 128px, 104px" quality={60} fetchPriority="low" />
+            <figcaption>{p.label}</figcaption>
+          </figure>
+        ))}
       </div>
-      <Hero3DSlot model="phone" screen={screen} cards={cards} />
+      <HeroStageSlot />
     </div>
   );
 }

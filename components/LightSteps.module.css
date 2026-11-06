@@ -1,26 +1,26 @@
-/* How it works – steps on a line with a light that only moves forward (6s loop) */
-.wrap { --accent: #b3332a; --size: 60px; position: relative; margin: 8px 0 32px; }
-.row { list-style: none; margin: 0; padding: 0; display: grid; gap: 28px; position: relative; z-index: 1; }
-.step { display: flex; gap: 18px; align-items: flex-start; }
-.step h2 { font-size: 1.15rem; margin: 6px 0 4px; }
-.step p { margin: 0; color: var(--muted, #5c5552); }
+/* How it works – steps on a line with a light that only moves forward (6s loop), on the dark stage */
+.wrap { --accent: #f3c27a; --size: 64px; position: relative; margin: 8px 0 48px; }
+.row { list-style: none; margin: 0; padding: 0; display: grid; gap: 34px; position: relative; z-index: 1; }
+.step { display: flex; gap: 20px; align-items: flex-start; }
+.step h2 { font-size: clamp(1.8rem, 4vw, 2.3rem); margin: 6px 0 6px; }
+.step p { margin: 0; color: var(--muted); max-width: 32ch; }
 
 .circle {
   flex: 0 0 auto; width: var(--size); height: var(--size); border-radius: 50%;
-  display: grid; place-items: center; font-weight: 900; font-size: 1.3rem;
-  background: #fff; color: var(--accent); border: 2px solid #e8dcd4;
-  transition: none;
+  display: grid; place-items: center; font-family: var(--font-display); font-style: italic; font-size: 1.8rem;
+  background: #1d1210; color: var(--accent); border: 1px solid rgb(255 236 220 / .2);
 }
 
 /* Track + moving light. Phones: vertical line on the left */
-.track { position: absolute; z-index: 0; left: calc(var(--size) / 2 - 2px); top: calc(var(--size) / 2); bottom: calc(var(--size) / 2 + 40px); width: 4px; border-radius: 4px; background: #eadfd8; overflow: visible; }
-.fill { position: absolute; inset: 0; border-radius: 4px; background: linear-gradient(180deg, #e0644a, var(--accent)); transform-origin: top; transform: scaleY(0); animation: grow-y 6s linear infinite; box-shadow: 0 0 14px rgb(224 100 74 / .6); }
+.track { position: absolute; z-index: 0; left: calc(var(--size) / 2 - 1px); top: calc(var(--size) / 2); bottom: calc(var(--size) / 2 + 40px); width: 2px; border-radius: 2px; background: rgb(255 236 220 / .12); }
+.fill { position: absolute; inset: 0; border-radius: 2px; background: linear-gradient(180deg, #e0574a, var(--accent)); transform-origin: top; transform: scaleY(0); animation: grow-y 6s linear infinite; box-shadow: 0 0 16px rgb(243 194 122 / .7); }
 
 @media (min-width: 900px) {
-  .row { grid-template-columns: repeat(4, 1fr); gap: 24px; }
-  .step { flex-direction: column; align-items: center; text-align: center; gap: 10px; }
-  .track { left: 12.5%; right: 12.5%; top: calc(var(--size) / 2 - 2px); bottom: auto; width: auto; height: 4px; }
-  .fill { background: linear-gradient(90deg, #e0644a, var(--accent)); transform-origin: left; transform: scaleX(0); animation-name: grow-x; }
+  .row { grid-template-columns: repeat(4, 1fr); gap: 28px; }
+  .step { flex-direction: column; align-items: center; text-align: center; gap: 14px; }
+  .step p { margin: 0 auto; }
+  .track { left: 12.5%; right: 12.5%; top: calc(var(--size) / 2 - 1px); bottom: auto; width: auto; height: 2px; }
+  .fill { background: linear-gradient(90deg, #e0574a, var(--accent)); transform-origin: left; transform: scaleX(0); animation-name: grow-x; }
 }
 
 /* The light reaches circle 1, 2, 3, 4 at 0%, 25%, 50%, 75% of the loop and never goes back */
@@ -31,12 +31,12 @@
 .c2 { animation: on2 6s linear infinite; }
 .c3 { animation: on3 6s linear infinite; }
 .c4 { animation: on4 6s linear infinite; }
-@keyframes on1 { 0%, 90% { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 0 0 6px rgb(179 51 42 / .14), 0 0 20px rgb(224 100 74 / .5); } 96%, 100% { background: #fff; color: var(--accent); border-color: #e8dcd4; box-shadow: none; } }
-@keyframes on2 { 0%, 24% { background: #fff; color: var(--accent); border-color: #e8dcd4; box-shadow: none; } 25%, 90% { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 0 0 6px rgb(179 51 42 / .14), 0 0 20px rgb(224 100 74 / .5); } 96%, 100% { background: #fff; color: var(--accent); border-color: #e8dcd4; box-shadow: none; } }
-@keyframes on3 { 0%, 49% { background: #fff; color: var(--accent); border-color: #e8dcd4; box-shadow: none; } 50%, 90% { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 0 0 6px rgb(179 51 42 / .14), 0 0 20px rgb(224 100 74 / .5); } 96%, 100% { background: #fff; color: var(--accent); border-color: #e8dcd4; box-shadow: none; } }
-@keyframes on4 { 0%, 74% { background: #fff; color: var(--accent); border-color: #e8dcd4; box-shadow: none; } 75%, 90% { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 0 0 6px rgb(179 51 42 / .14), 0 0 20px rgb(224 100 74 / .5); } 96%, 100% { background: #fff; color: var(--accent); border-color: #e8dcd4; box-shadow: none; } }
+@keyframes on1 { 0%, 90% { background: var(--accent); color: #1a0f0c; border-color: var(--accent); box-shadow: 0 0 0 8px rgb(243 194 122 / .12), 0 0 30px rgb(243 194 122 / .5); } 96%, 100% { background: #1d1210; color: var(--accent); border-color: rgb(255 236 220 / .2); box-shadow: none; } }
+@keyframes on2 { 0%, 24% { background: #1d1210; color: var(--accent); border-color: rgb(255 236 220 / .2); box-shadow: none; } 25%, 90% { background: var(--accent); color: #1a0f0c; border-color: var(--accent); box-shadow: 0 0 0 8px rgb(243 194 122 / .12), 0 0 30px rgb(243 194 122 / .5); } 96%, 100% { background: #1d1210; color: var(--accent); border-color: rgb(255 236 220 / .2); box-shadow: none; } }
+@keyframes on3 { 0%, 49% { background: #1d1210; color: var(--accent); border-color: rgb(255 236 220 / .2); box-shadow: none; } 50%, 90% { background: var(--accent); color: #1a0f0c; border-color: var(--accent); box-shadow: 0 0 0 8px rgb(243 194 122 / .12), 0 0 30px rgb(243 194 122 / .5); } 96%, 100% { background: #1d1210; color: var(--accent); border-color: rgb(255 236 220 / .2); box-shadow: none; } }
+@keyframes on4 { 0%, 74% { background: #1d1210; color: var(--accent); border-color: rgb(255 236 220 / .2); box-shadow: none; } 75%, 90% { background: var(--accent); color: #1a0f0c; border-color: var(--accent); box-shadow: 0 0 0 8px rgb(243 194 122 / .12), 0 0 30px rgb(243 194 122 / .5); } 96%, 100% { background: #1d1210; color: var(--accent); border-color: rgb(255 236 220 / .2); box-shadow: none; } }
 
 @media (prefers-reduced-motion: reduce) {
   .fill { animation: none; transform: none; }
-  .c1, .c2, .c3, .c4 { animation: none; background: var(--accent); color: #fff; border-color: var(--accent); }
+  .c1, .c2, .c3, .c4 { animation: none; background: var(--accent); color: #1a0f0c; border-color: var(--accent); }
 }

@@ -13,11 +13,13 @@ export const metadata = {
 
 export default function HowItWorksPage() {
   return (
-    <section className="section">
-      <div className="wrap">
-        <div className="hero-grid hero-big">
+    <>
+      <section className="stage page-hero">
+        <div className="stage-bg" aria-hidden="true" />
+        <div className="wrap hero-big">
           <div>
-            <h1>How Lore works</h1>
+            <p className="eyebrow">4 steps · No editing</p>
+            <h1>How <em>Lore</em> works</h1>
             <p className="lead">
               Lore turns your photo into a video you can share. You do not need to edit anything. Here are the four steps.
             </p>
@@ -26,10 +28,14 @@ export default function HowItWorksPage() {
           {/* 3D step flow (desktop only): template cards hop through the 4 steps */}
           <Hero3DSlot model="flow" />
         </div>
-        {/* The 4 steps on a line with a forward-moving light (components/LightSteps.js) */}
-        <LightSteps />
-        <PlayStoreButton />
-      </div>
-    </section>
+      </section>
+      <section className="section" aria-label="The four steps">
+        <div className="wrap">
+          {/* The 4 steps on a line with a forward-moving light (components/LightSteps.js) */}
+          <LightSteps />
+          <PlayStoreButton />
+        </div>
+      </section>
+    </>
   );
 }

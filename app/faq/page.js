@@ -16,15 +16,21 @@ export const metadata = {
 
 export default function FaqPage() {
   return (
-    <section className="section">
+    <section className="section paper page-faq">
       <JsonLd data={faqSchema(FAQS)} />
-      <div className="wrap">
-        <h1>Lore FAQ</h1>
-        <p className="lead">Short, direct answers about Lore: Viral Star Bano.</p>
-        <FaqList faqs={FAQS} HeadingTag="h2" />
-        <div className={faqStyles.cta}>
-          <p><strong>Aur sawal?</strong> Sabse aasaan jawab: app khud try karke dekho.</p>
+      <div className="wrap faq-layout">
+        <div className="faq-side">
+          <p className="eyebrow">{FAQS.length} questions · English + Hinglish</p>
+          <h1>Lore <em>FAQ</em></h1>
+          <p className="lead">Short, direct answers about Lore: Viral Star Bano.</p>
           <PlayStoreButton />
+        </div>
+        <div>
+          <FaqList faqs={FAQS} HeadingTag="h2" />
+          <div className={faqStyles.cta}>
+            <p><strong>Aur sawal?</strong> Sabse aasaan jawab: app khud try karke dekho.</p>
+            <PlayStoreButton />
+          </div>
         </div>
       </div>
     </section>

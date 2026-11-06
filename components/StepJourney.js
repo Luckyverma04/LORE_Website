@@ -127,24 +127,29 @@ const STEPS = [
 
 export default function StepJourney() {
   return (
-    <section className={styles.section} aria-labelledby="kaise-h">
+    <section className={`section stage cv ${styles.section}`} aria-labelledby="kaise-h">
+      <div className="stage-bg" aria-hidden="true" />
       <div className="wrap">
-        <div className={styles.head}>
-          <h2 id="kaise-h">Kaise banta hai?</h2>
-          <p>Selfie se viral video tak, 4 steps mein.</p>
+        <div className="sec-head">
+          <div>
+            <span className="sec-num" aria-hidden="true">03 — How it works</span>
+            <h2 id="kaise-h">Kaise <em>banta</em> hai?</h2>
+          </div>
+          <p className="lead">Selfie se viral video tak, 4 steps mein.</p>
         </div>
         <ol className={styles.journey}>
           {STEPS.map((s, i) => (
             <li key={s.title} className={s.feature ? `${styles.step} ${styles.feature}` : styles.step}>
+              <span className={styles.bigNum} aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
               <div className={styles.visual}>{s.visual}</div>
-              <span className={styles.badge}>{String(i + 1).padStart(2, "0")}</span>
+              <span className={styles.badge}>Step {i + 1}</span>
               <h3>{s.title}</h3>
               <p>{s.text}</p>
             </li>
           ))}
         </ol>
         <p className={styles.more}>
-          <Link prefetch={false} href="/how-it-works">Poora guide dekho →</Link>
+          <Link prefetch={false} href="/how-it-works" className="link-arrow">Poora guide dekho <span aria-hidden="true">→</span></Link>
         </p>
       </div>
     </section>

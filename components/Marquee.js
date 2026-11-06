@@ -23,8 +23,10 @@ export default function Marquee({ folder = "showcase" }) {
               aria-hidden={copy === 0 && i < images.length ? undefined : true}
               width={320}
               height={379}
-              sizes="200px"
+              sizes="(min-width: 900px) 220px, 150px"
+              quality={60}
               className="marquee-img"
+              fetchPriority="low"
             />
           ))
         )}
