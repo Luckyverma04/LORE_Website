@@ -19,6 +19,8 @@ export default function HomeAnimations() {
     let cancelled = false;
     let cleanup = () => {};
     const isDesktop = window.matchMedia("(min-width: 900px) and (pointer: fine)").matches;
+    // Let the browser breathe between setup steps, so no single task blocks the page for long.
+    const pause = () => new Promise((r) => setTimeout(r, 0));
 
     // React marks each element it hydrates with a "__reactFiber..." key.
     const hydrated = (el) => !el || Object.keys(el).some((k) => k.startsWith("__reactFiber"));
@@ -26,20 +28,23 @@ export default function HomeAnimations() {
     let timer;
 
     const run = async () => {
-      const [{ gsap }, { ScrollTrigger }, { default: Lenis }] = await Promise.all([
-        import("gsap"),
-        import("gsap/ScrollTrigger"),
-        import("lenis"),
-      ]);
+      const [{ gsap }, { ScrollTrigger }] = await Promise.all([import("gsap"), import("gsap/ScrollTrigger")]);
       if (cancelled) return;
       gsap.registerPlugin(ScrollTrigger);
+      await pause();
 
-      // ---------- Smooth scroll ----------
-      const lenis = new Lenis({ duration: 1.1, smoothWheel: true });
-      lenis.on("scroll", ScrollTrigger.update);
-      const raf = (t) => lenis.raf(t * 1000);
-      gsap.ticker.add(raf);
-      gsap.ticker.lagSmoothing(0);
+      // ---------- Smooth scroll (desktop mouse wheel only; phones already scroll smoothly) ----------
+      let lenis = null;
+      let raf = null;
+      if (isDesktop) {
+        const { default: Lenis } = await import("lenis");
+        if (cancelled) return;
+        lenis = new Lenis({ duration: 1.1, smoothWheel: true });
+        lenis.on("scroll", ScrollTrigger.update);
+        raf = (t) => lenis.raf(t * 1000);
+        gsap.ticker.add(raf);
+        gsap.ticker.lagSmoothing(0);
+      }
 
       // ---------- Scroll progress bar (sits right under the sticky header) ----------
       const bar = document.querySelector(".scroll-progress");
@@ -57,7 +62,23 @@ export default function HomeAnimations() {
           onComplete() { gsap.set(targets, { clearProps: "transform,opacity,transition" }); },
         });
 
-      const ctx = gsap.context(() => {
+      // Each group below is set up in its own short task (with a pause in between).
+      const ctx = gsap.context(() => {});
+      const off = [];
+      cleanup = () => {
+        off.forEach((f) => f());
+        ro?.disconnect();
+        ctx.revert();
+        if (raf) gsap.ticker.remove(raf);
+        lenis?.destroy();
+      };
+      const step = async (fn) => {
+        if (cancelled) return;
+        ctx.add(fn);
+        await pause();
+      };
+
+      await step(() => {
         if (bar) {
           gsap.to(bar, { scaleX: 1, ease: "none", scrollTrigger: { start: 0, end: "max", scrub: 0.3 } });
         }
@@ -65,7 +86,9 @@ export default function HomeAnimations() {
         // Hero entrance is pure CSS (runs before JS). Here: hero parallax while scrolling away.
         gsap.to(".hero-visual", { y: 90, ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true } });
         gsap.to(".hero .hero-grid > div:first-child", { y: 40, opacity: 0.35, ease: "none", scrollTrigger: { trigger: ".hero", start: "40% top", end: "bottom top", scrub: true } });
+      });
 
+      await step(() => {
         // ---------- Section headings and intro lines ----------
         gsap.utils.toArray("main section:not(.hero) h2").forEach((h) => {
           gsap.from(h, { y: 40, opacity: 0, duration: 0.8, ease: "power3.out", scrollTrigger: { trigger: h, start: "top 88%", once: true } });
@@ -76,6 +99,9 @@ export default function HomeAnimations() {
 
         // ---------- "Ek photo, kai andaaz" strip ----------
         gsap.from(".marquee", { opacity: 0, scale: 0.94, duration: 1, ease: "power3.out", scrollTrigger: { trigger: ".marquee", start: "top 90%", once: true } });
+      });
+
+      await step(() => {
 
         // ---------- App screenshots: a deck of cards that opens as you scroll ----------
         const preview = document.querySelector(".preview");
@@ -109,6 +135,9 @@ export default function HomeAnimations() {
             enter(screens, { y: 60, opacity: 0, duration: 0.8, stagger: 0.1, ease: "power3.out", scrollTrigger: { trigger: preview, start: "top 88%", once: true } });
           }
         }
+      });
+
+      await step(() => {
 
         // ---------- "Kaise banta hai" steps rise one by one ----------
         const steps = gsap.utils.toArray('section[aria-labelledby="kaise-h"] ol > li');
@@ -132,9 +161,9 @@ export default function HomeAnimations() {
           scrollTrigger: { trigger: "main details", start: "top 90%", once: true },
         });
       });
+      if (cancelled) return;
 
       // ---------- Desktop-only pointer effects ----------
-      const off = [];
       if (isDesktop) {
         // Magnetic Play buttons
         document.querySelectorAll(".play").forEach((btn) => {
@@ -175,21 +204,18 @@ export default function HomeAnimations() {
         }
       }
 
-      ScrollTrigger.refresh();
-      cleanup = () => {
-        off.forEach((f) => f());
-        ro?.disconnect();
-        ctx.revert();
-        gsap.ticker.remove(raf);
-        lenis.destroy();
-      };
+      await pause();
+      if (!cancelled) ScrollTrigger.refresh();
     };
 
     const waitForHydration = () => {
       if (cancelled) return;
       const sample = [document.querySelector(".hero h1"), document.querySelector("main details"), document.querySelector(".preview")];
-      if (sample.every(hydrated) || ++tries > 100) run();
-      else timer = setTimeout(waitForHydration, 100);
+      if (sample.every(hydrated) || ++tries > 100) {
+        // Start when the browser is idle (page painted and ready), not in the middle of loading.
+        if ("requestIdleCallback" in window) window.requestIdleCallback(() => !cancelled && run(), { timeout: 2000 });
+        else run();
+      } else timer = setTimeout(waitForHydration, 100);
     };
     timer = setTimeout(waitForHydration, 0);
 

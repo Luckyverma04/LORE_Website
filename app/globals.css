@@ -1,5 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+/* components/ui (shadcn) is not used on any page yet: skip it so its CSS is not shipped. Remove this line when you use a ui component. */
+@source not "../components/ui";
 
 @custom-variant dark (&:is(.dark *));
 /* Mobile-first. Colours taken from the Lore app (maroon logo, cream background). */
