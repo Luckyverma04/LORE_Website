@@ -434,6 +434,75 @@ border-radius: 2px;
 .cat-card.no-img p { margin: 0; }
 .cat-row .cat-card.no-img { min-height: 380px; }
 
+/* ═════════════ Templates page: 3D template wall ═════════════ */
+.tpl-wall { perspective: 1600px; perspective-origin: 50% 0%; max-width: 940px; margin: 0 auto 72px; }
+.tpl-wall-inner {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 26px 14px; transform-style: preserve-3d;
+  padding-bottom: 28px; /* room for the lowered cards */
+}
+@media (min-width: 720px) { .tpl-wall-inner { grid-template-columns: repeat(4, 1fr); gap: 30px 22px; } }
+/* zig-zag rhythm: every second column sits a little lower */
+.tpl-wall .cat-card:nth-child(even) { --off: 28px; }
+.tpl-wall .cat-card {
+  padding: 6px 6px 14px; border-radius: 18px; transform-style: preserve-3d; will-change: transform;
+  transform: translateY(var(--off, 0px)) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateZ(var(--z, 0px));
+  transition: transform .5s var(--ease), border-color .4s, box-shadow .5s var(--ease);
+  box-shadow: 0 24px 40px -28px rgb(0 0 0 / .95);
+}
+.tpl-wall .cat-card:hover { --z: 34px; transition: transform .15s linear, border-color .4s, box-shadow .5s var(--ease); }
+/* light glare that follows the mouse (--gx/--gy from components/TiltCards.js) */
+.tpl-wall .cat-card::after {
+  content: ""; position: absolute; inset: 0; z-index: 2; border-radius: inherit; pointer-events: none; opacity: 0;
+  background: radial-gradient(260px circle at var(--gx, 50%) var(--gy, 0%), rgb(255 236 210 / .22), transparent 60%);
+  transition: opacity .4s;
+}
+.tpl-wall .cat-card:hover::after { opacity: 1; }
+.tpl-wall .cat-img { border-radius: 13px; margin-bottom: 12px; }
+.tpl-wall .cat-name { font-size: 1.45rem; margin: 0 6px 4px; }
+.tpl-wall .cat-card p { font-size: .84rem; margin: 0 6px; }
+/* the wall leans back and straightens as it scrolls into view (browsers with scroll-driven animations) */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .tpl-wall-inner { animation: wall-in linear both; animation-timeline: view(); animation-range: entry 0% cover 38%; }
+  }
+}
+@keyframes wall-in { from { transform: rotateX(34deg) translateY(70px) scale(.9); opacity: .35; } to { transform: none; opacity: 1; } }
+
+/* Phones: the wall becomes a swipeable 3D coverflow. Each card turns as it slides past the
+   centre (scroll-driven animation on the row's own scroll position). Flat swipe row without support. */
+@media (max-width: 719px) {
+  .tpl-wall { margin-left: calc(var(--gutter) * -1); margin-right: calc(var(--gutter) * -1); max-width: none; }
+  .tpl-wall-inner {
+    display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+    padding: 14px 23vw 18px; perspective: 800px; animation: none !important;
+  }
+  .tpl-wall-inner::-webkit-scrollbar { display: none; }
+  .tpl-wall .cat-card { flex: 0 0 54vw; scroll-snap-align: center; --off: 0px; }
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .tpl-wall .cat-card { animation: coverflow linear both; animation-timeline: view(inline); }
+    }
+  }
+}
+@keyframes coverflow {
+  /* 0% = card entering on the right, 100% = leaving on the left; side cards are pulled toward the centre */
+  0% { transform: translateX(-24%) rotateY(-36deg) scale(.84); opacity: .6; }
+  50% { transform: none; opacity: 1; }
+  100% { transform: translateX(24%) rotateY(36deg) scale(.84); opacity: .6; }
+}
+.tpl-swipe { display: none; margin: -40px 0 36px; text-align: center; font-size: .8rem; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+@media (max-width: 719px) { .tpl-swipe { display: block; } }
+
+/* categories without an image: compact panels */
+.tpl-more { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; max-width: 940px; margin: 0 auto 48px; }
+@media (min-width: 720px) { .tpl-more { grid-template-columns: repeat(3, 1fr); gap: 16px; } }
+.tpl-more .cat-card.no-img { min-height: 0; padding: 18px 16px; justify-content: flex-start; }
+.tpl-more .cat-card.no-img::before { font-size: 5.5rem; top: -10px; }
+.tpl-more .cat-name { font-size: 1.35rem; }
+.tpl-more .cat-card p { font-size: .86rem; }
+.tpl .note-card, .tpl .wrap > .play { max-width: 940px; margin-left: auto; margin-right: auto; }
+.tpl .wrap > .play { display: flex; width: fit-content; }
+
 /* ═════════════ Panels and notes ═════════════ */
 .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px; }
 .card p { margin: 0; color: var(--muted); }

@@ -14,6 +14,7 @@ const TARGETS = [
   ".preview",          // horizontal rows are revealed as a whole, so cards that are
   ".cat-row",          // off to the side (only reachable by swiping) never stay hidden
   ".cat-grid .cat-card",
+  ".tpl-more .cat-card",
   "main ol > li",
   "main details",
   ".card",

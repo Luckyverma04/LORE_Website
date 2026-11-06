@@ -2,6 +2,7 @@ import Link from "next/link";
 import PlayStoreButton from "@/components/PlayStoreButton";
 import CategoryCard from "@/components/CategoryCard";
 import Hero3DSlot from "@/components/Hero3DSlot";
+import TiltCards from "@/components/TiltCards";
 import { CATEGORIES } from "@/lib/site";
 import { OG_DEFAULTS } from "@/lib/og";
 
@@ -12,6 +13,9 @@ export const metadata = {
   alternates: { canonical: "/templates" },
   openGraph: { ...OG_DEFAULTS, url: "/templates" },
 };
+
+const withImage = CATEGORIES.filter((c) => c.image);
+const textOnly = CATEGORIES.filter((c) => !c.image);
 
 export default function TemplatesPage() {
   return (
@@ -32,13 +36,25 @@ export default function TemplatesPage() {
           <Hero3DSlot model="carousel" />
         </div>
       </section>
-      <section className="section posters">
+      <section className="section posters tpl">
         <div className="wrap">
-          <div className="cat-grid">
-            {CATEGORIES.map((c, i) => (
-              <CategoryCard key={c.name} category={c} lcp={i === 0} HeadingTag="h2" sizes="(min-width: 1100px) 270px, (min-width: 720px) 30vw, 45vw" />
+          {/* 3D template wall: the categories that have a real template image.
+              It leans back in 3D and straightens as it scrolls into view (CSS), cards tilt under the mouse. */}
+          <div className="tpl-wall">
+            <div className="tpl-wall-inner">
+              {withImage.map((c, i) => (
+                <CategoryCard key={c.name} category={c} lcp={i === 0} HeadingTag="h2" sizes="(min-width: 720px) 210px, 54vw" />
+              ))}
+            </div>
+          </div>
+          <p className="tpl-swipe" aria-hidden="true">← Swipe →</p>
+          {/* Categories without an image: compact panels */}
+          <div className="tpl-more">
+            {textOnly.map((c) => (
+              <CategoryCard key={c.name} category={c} HeadingTag="h2" />
             ))}
           </div>
+          <TiltCards selector=".tpl-wall .cat-card" />
           <div className="note-card">
             <h2>Template kaise <em>use</em> karein?</h2>
             <p>
