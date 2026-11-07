@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { whenIdle } from "@/lib/after-frame";
 
 /**
  * Home page motion: GSAP / ScrollTrigger on top of the browser's own (native) scrolling.
@@ -19,8 +20,10 @@ export default function HomeAnimations() {
     let cancelled = false;
     let cleanup = () => {};
     const isDesktop = window.matchMedia("(min-width: 900px) and (pointer: fine)").matches;
-    // Let the browser breathe between setup steps, so no single task blocks the page for long.
-    const pause = () => new Promise((r) => setTimeout(r, 0));
+    // Between setup steps, wait until the browser is idle: by then it has drawn a frame, so each step
+    // starts with an up-to-date layout (its measurements force no synchronous reflow), and the setup
+    // never competes with more urgent work (no long tasks).
+    const pause = () => whenIdle();
 
     // React marks each element it hydrates with a "__reactFiber..." key.
     const hydrated = (el) => !el || Object.keys(el).some((k) => k.startsWith("__reactFiber"));
@@ -65,6 +68,10 @@ export default function HomeAnimations() {
       await step(() => {
         // the film strip straightens out as it crosses the screen; the big words drift the other way
         gsap.fromTo(".marquee", { rotate: -8 }, { rotate: -1.5, ease: "none", scrollTrigger: { trigger: ".film", start: "top bottom", end: "bottom top", scrub: true } });
+      });
+
+      // (separate step: the tween above writes a style; measuring in the same task would force a reflow)
+      await step(() => {
         gsap.fromTo(".film-words", { xPercent: 0 }, { xPercent: -12, ease: "none", scrollTrigger: { trigger: ".film", start: "top bottom", end: "bottom top", scrub: true } });
       });
 

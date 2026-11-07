@@ -1,6 +1,5 @@
 import PlayStoreButton from "@/components/PlayStoreButton";
 import FaqList from "@/components/FaqList";
-import faqStyles from "@/components/FaqList.module.css";
 import JsonLd from "@/components/JsonLd";
 import { FAQS } from "@/lib/faqs";
 import { faqSchema } from "@/lib/schema";
@@ -27,7 +26,7 @@ export default function FaqPage() {
         </div>
         <div>
           <FaqList faqs={FAQS} HeadingTag="h2" />
-          <div className={faqStyles.cta}>
+          <div className="faq-cta">
             <p><strong>Aur sawal?</strong> Sabse aasaan jawab: app khud try karke dekho.</p>
             <PlayStoreButton />
           </div>

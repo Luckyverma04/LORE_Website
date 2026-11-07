@@ -8,7 +8,7 @@ import { useEffect } from "react";
 // Content is ALWAYS visible in the HTML (good for Google and for users without JavaScript).
 // Only after this script runs do we hide below-the-fold items and fade them in as they scroll into view.
 const TARGETS = [
-  "main section:not(.hero) h2",
+  "main section:not(.hero) h2:not(.tpl-wall h2)", // template-wall cards animate on their own
   ".lead:not(.hero .lead)",
   ".film-tilt",        // the film strip's wrapper (GSAP turns the strip itself while you scroll)
   ".preview",          // horizontal rows are revealed as a whole, so cards that are

@@ -1,9 +1,5 @@
 import localFont from "next/font/local";
 import "./globals.css";
-// Bundled with the main CSS so the silent prefetch of /how-it-works and /faq does not preload separate files
-// (avoids the "preloaded but not used" console warning).
-import "@/components/LightSteps.module.css";
-import "@/components/FaqList.module.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import JsonLd from "@/components/JsonLd";

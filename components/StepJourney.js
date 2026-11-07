@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import PhoneMockup from "./PhoneMockup";
-import styles from "./StepJourney.module.css";
+import StageGlow from "./StageGlow";
 import { PLAY_FACTS } from "@/lib/site";
 
 // "Kaise banta hai?" on Home: a 4-step visual story, from installing Lore to downloading the video.
@@ -30,21 +30,21 @@ const Icon = {
 
 function InstallScreen() {
   return (
-    <div className={styles.install}>
-      <span className={styles.appIcon}>LORE</span>
+    <div className="sj-install">
+      <span className="sj-appIcon">LORE</span>
       <strong>Lore: Viral Star Bano</strong>
       <small>Android app{PLAY_FACTS.rating ? ` · ${PLAY_FACTS.rating} ★` : ""}</small>
-      <span className={styles.installBtn}>Install</span>
+      <span className="sj-installBtn">Install</span>
     </div>
   );
 }
 
 function TemplateScreen() {
   return (
-    <div className={styles.tplScreen}>
-      <span className={styles.screenTitle}>Template chuno</span>
-      <div className={styles.tplGrid}>
-        {TEMPLATE_GRID.map((n) => <Thumb key={n} name={n} className={styles.tplThumb} />)}
+    <div>
+      <span className="sj-screenTitle">Template chuno</span>
+      <div className="sj-tplGrid">
+        {TEMPLATE_GRID.map((n) => <Thumb key={n} name={n} className="sj-tplThumb" />)}
       </div>
     </div>
   );
@@ -52,29 +52,29 @@ function TemplateScreen() {
 
 function PhotoScreen() {
   return (
-    <div className={styles.photoScreen}>
-      <span className={styles.screenTitle}>Apni photo chuno</span>
-      <div className={styles.photoGrid}>
+    <div>
+      <span className="sj-screenTitle">Apni photo chuno</span>
+      <div className="sj-photoGrid">
         {[0, 1, 2, 3, 4, 5].map((i) => (
-          <span key={i} className={i === 4 ? `${styles.photoTile} ${styles.selected}` : styles.photoTile}>
-            {i === 4 && <span className={styles.person} />}
+          <span key={i} className={i === 4 ? `sj-photoTile sj-selected` : "sj-photoTile"}>
+            {i === 4 && <span className="sj-person" />}
           </span>
         ))}
       </div>
-      <span className={styles.useBtn}>Is photo ko use karo</span>
+      <span className="sj-useBtn">Is photo ko use karo</span>
     </div>
   );
 }
 
 function VideoScreen() {
   return (
-    <div className={styles.videoScreen}>
-      <Image src="/showcase/desi-girl.webp" alt="" width={640} height={747} sizes="140px" className={styles.videoImg} />
-      <span className={styles.playBtn}>{Icon.play}</span>
-      <span className={styles.progress}><span /></span>
-      <div className={styles.videoActions}>
-        <span className={styles.dlBtn}>{Icon.download} Download</span>
-        <span className={styles.shareBtn}>{Icon.share}</span>
+    <div className="sj-videoScreen">
+      <Image src="/showcase/desi-girl.webp" alt="" width={640} height={747} sizes="140px" className="sj-videoImg" />
+      <span className="sj-playBtn">{Icon.play}</span>
+      <span className="sj-progress"><span /></span>
+      <div className="sj-videoActions">
+        <span className="sj-dlBtn">{Icon.download} Download</span>
+        <span className="sj-shareBtn">{Icon.share}</span>
       </div>
     </div>
   );
@@ -87,7 +87,7 @@ const STEPS = [
     visual: (
       <>
         <PhoneMockup><InstallScreen /></PhoneMockup>
-        <span className={`${styles.float} ${styles.floatDownload}`}>{Icon.download}</span>
+        <span className="sj-float sj-floatDownload">{Icon.download}</span>
       </>
     ),
   },
@@ -97,9 +97,9 @@ const STEPS = [
     feature: true,
     visual: (
       <>
-        <Thumb name="vlog" className={`${styles.floatCard} ${styles.floatCardA}`} />
+        <Thumb name="vlog" className="sj-floatCard sj-floatCardA" />
         <PhoneMockup tilt={-6}><TemplateScreen /></PhoneMockup>
-        <Thumb name="friends" className={`${styles.floatCard} ${styles.floatCardB}`} />
+        <Thumb name="friends" className="sj-floatCard sj-floatCardB" />
       </>
     ),
   },
@@ -109,7 +109,7 @@ const STEPS = [
     visual: (
       <>
         <PhoneMockup><PhotoScreen /></PhoneMockup>
-        <span className={`${styles.float} ${styles.floatPhoto}`}><span className={styles.person} /></span>
+        <span className="sj-float sj-floatPhoto"><span className="sj-person" /></span>
       </>
     ),
   },
@@ -119,7 +119,7 @@ const STEPS = [
     visual: (
       <>
         <PhoneMockup><VideoScreen /></PhoneMockup>
-        <span className={`${styles.float} ${styles.floatShare}`}>{Icon.share}</span>
+        <span className="sj-float sj-floatShare">{Icon.share}</span>
       </>
     ),
   },
@@ -127,8 +127,8 @@ const STEPS = [
 
 export default function StepJourney() {
   return (
-    <section className={`section stage ${styles.section}`} aria-labelledby="kaise-h">
-      <div className="stage-bg" aria-hidden="true"><span className="stage-glow" /></div>
+    <section className="section stage sj-section" aria-labelledby="kaise-h">
+      <div className="stage-bg" aria-hidden="true"><StageGlow /></div>
       <div className="wrap">
         <div className="sec-head">
           <div>
@@ -136,18 +136,18 @@ export default function StepJourney() {
           </div>
           <p className="lead">Selfie se viral video tak, 4 steps mein.</p>
         </div>
-        <ol className={styles.journey}>
+        <ol className="sj-journey">
           {STEPS.map((s, i) => (
-            <li key={s.title} className={s.feature ? `${styles.step} ${styles.feature}` : styles.step}>
-              <span className={styles.bigNum} aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
-              <div className={styles.visual}>{s.visual}</div>
-              <span className={styles.badge}>Step {i + 1}</span>
+            <li key={s.title} className={s.feature ? `sj-step sj-feature` : "sj-step"}>
+              <span className="sj-bigNum" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+              <div className="sj-visual">{s.visual}</div>
+              <span className="sj-badge">Step {i + 1}</span>
               <h3>{s.title}</h3>
               <p>{s.text}</p>
             </li>
           ))}
         </ol>
-        <p className={styles.more}>
+        <p className="sj-more">
           <Link prefetch={false} href="/how-it-works" className="link-arrow">Poora guide dekho <span aria-hidden="true">→</span></Link>
         </p>
       </div>

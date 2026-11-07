@@ -3,6 +3,7 @@ import PlayStoreButton from "@/components/PlayStoreButton";
 import CategoryCard from "@/components/CategoryCard";
 import Hero3DSlot from "@/components/Hero3DSlot";
 import TiltCards from "@/components/TiltCards";
+import StageGlow from "@/components/StageGlow";
 import { CATEGORIES } from "@/lib/site";
 import { OG_DEFAULTS } from "@/lib/og";
 
@@ -21,7 +22,7 @@ export default function TemplatesPage() {
   return (
     <>
       <section className="stage page-hero">
-        <div className="stage-bg" aria-hidden="true"><span className="stage-glow" /></div>
+        <div className="stage-bg" aria-hidden="true"><StageGlow /></div>
         <div className="wrap hero-big">
           <div>
             <p className="eyebrow">{CATEGORIES.length} categories in the app</p>

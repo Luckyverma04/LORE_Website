@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { afterFrame } from "@/lib/after-frame";
 
 // Desktop only: a soft light (.stage-glow) in each ".stage" section follows the mouse.
 // - It is moved with transform only, so the section is never repainted.
@@ -38,7 +39,7 @@ export default function StageLight() {
         const top = it.top - sy;
         if (top + it.h < 0 || top > vh) return;
         it.glow.style.transform = `translate3d(${x - it.left - 320}px, ${y - top - 210}px, 0)`;
-        if (!it.on) { it.glow.classList.add("is-on"); it.on = true; }
+        if (!it.on) { it.glow.style.opacity = "1"; it.on = true; }
       });
     };
     const live = document.getElementsByClassName("stage-glow"); // live list: updates on page change
@@ -57,13 +58,15 @@ export default function StageLight() {
     };
     const onScroll = () => { sy = window.scrollY; };
 
-    window.addEventListener("load", measure);
-    window.addEventListener("resize", measure);
+    // measure after a frame has been drawn, when layout is already up to date (no forced reflow)
+    const measureLater = () => afterFrame().then(measure);
+    window.addEventListener("load", measureLater);
+    window.addEventListener("resize", measureLater);
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("pointermove", onMove, { passive: true });
     return () => {
-      window.removeEventListener("load", measure);
-      window.removeEventListener("resize", measure);
+      window.removeEventListener("load", measureLater);
+      window.removeEventListener("resize", measureLater);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("pointermove", onMove);
       cancelAnimationFrame(frame);

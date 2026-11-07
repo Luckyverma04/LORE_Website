@@ -19,7 +19,7 @@ const nextConfig = {
     imageSizes: [72, 140, 160, 200, 210, 240, 320, 420, 480],
     // Widths for "vw" sizes (templates grid on phones). Our largest source image is 1200px wide.
     deviceSizes: [640, 750, 828, 1080, 1200],
-    qualities: [60, 75],
+    qualities: [55, 60, 75],
   },
   turbopack: {
     // Drop Next.js's legacy polyfills: every browser in our browserslist has these features natively.

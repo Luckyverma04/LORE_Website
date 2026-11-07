@@ -1,6 +1,7 @@
 import PlayStoreButton from "@/components/PlayStoreButton";
 import Hero3DSlot from "@/components/Hero3DSlot";
 import LightSteps from "@/components/LightSteps";
+import StageGlow from "@/components/StageGlow";
 import { OG_DEFAULTS } from "@/lib/og";
 
 export const metadata = {
@@ -15,7 +16,7 @@ export default function HowItWorksPage() {
   return (
     <>
       <section className="stage page-hero">
-        <div className="stage-bg" aria-hidden="true"><span className="stage-glow" /></div>
+        <div className="stage-bg" aria-hidden="true"><StageGlow /></div>
         <div className="wrap hero-big">
           <div>
             <p className="eyebrow">4 steps · No editing</p>

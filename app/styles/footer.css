@@ -1,0 +1,56 @@
+/* Global styles (were Footer.module.css). Class names start with "ft-" so they never clash. */
+/* ---------- Closing CTA: maroon curtain + gold spotlight ---------- */
+.ft-cta {
+  position: relative; overflow: hidden; isolation: isolate; text-align: center; color: #fff8f1;
+  background:
+    radial-gradient(120% 90% at 50% 110%, #c23a30 0, #8e2a23 35%, #4a1411 70%, #1a0908 100%);
+  padding: 110px 0 120px;
+}
+/* curtain folds */
+.ft-cta::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; opacity: .5;
+  background: repeating-linear-gradient(90deg, rgb(0 0 0 / .28) 0 2px, transparent 2px 46px, rgb(255 255 255 / .05) 46px 48px, transparent 48px 92px);
+  -webkit-mask-image: linear-gradient(180deg, #000, transparent 85%); mask-image: linear-gradient(180deg, #000, transparent 85%);
+}
+.ft-beam {
+  position: absolute; left: 50%; top: -30%; z-index: -1; width: 70%; height: 150%; transform: translateX(-50%);
+  background: radial-gradient(30% 80% at 50% 0%, rgb(255 223 174 / .26), rgb(255 223 174 / .08) 55%, transparent 100%);
+  pointer-events: none;
+}
+.ft-kick { margin: 0 0 16px; font-size: .78rem; font-weight: 700; letter-spacing: .3em; text-transform: uppercase; color: #f3c27a; }
+.ft-ctaText h2 { color: #fff8f1; font-size: clamp(3.2rem, 11vw, 7.5rem); line-height: .92; margin: 0 auto 20px; max-width: 12ch; }
+.ft-ctaText h2 em { color: #f3c27a; }
+.ft-ctaText p { color: rgb(255 248 241 / .82); font-size: 1.15rem; margin-bottom: 30px; }
+@media (min-width: 900px) { .ft-cta { padding: 160px 0 170px; } }
+
+/* ---------- Footer ---------- */
+.ft-footer { position: relative; background: #0a0605; color: rgb(255 248 241 / .78); font-size: .95rem; border-top: 1px solid rgb(255 236 220 / .08); }
+/* main area: links on top, the giant word behind them */
+/* tall enough to hold the whole word (60vw font x 0.72 line height) */
+.ft-main { position: relative; overflow: hidden; isolation: isolate; padding: 64px 0 40px; min-height: max(420px, 46vw); }
+.ft-giant {
+  position: absolute; z-index: -1; left: 0; right: 0; bottom: 0; margin: 0;
+  text-align: center; font-family: var(--font-display); font-style: italic;
+  font-size: 60vw; line-height: .72; letter-spacing: -.03em;
+  /* the bottom of the letters sits exactly on the copyright line */
+  transform: translateY(.02em);
+  color: transparent; -webkit-text-stroke: 1px rgb(243 194 122 / .2);
+  background: linear-gradient(180deg, rgb(243 194 122 / .03), rgb(243 194 122 / .16)); -webkit-background-clip: text; background-clip: text;
+  user-select: none; pointer-events: none; white-space: nowrap;
+}
+.ft-cols { display: grid; gap: 32px; grid-template-columns: 1fr 1fr; position: relative; }
+.ft-cols > div:first-child { grid-column: 1 / -1; }
+@media (min-width: 900px) {
+  .ft-cols { grid-template-columns: 2fr 1fr 1fr; }
+  .ft-cols > div:first-child { grid-column: auto; }
+}
+.ft-brand { margin: 0; font-family: var(--font-display); font-size: 2.6rem; line-height: 1; letter-spacing: .06em; color: #fff8f1; }
+.ft-tag { margin: 8px 0 0; color: rgb(255 248 241 / .66); font-family: var(--font-display); font-style: italic; font-size: 1.25rem; }
+.ft-head { margin: 0 0 14px; font-size: .72rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: #f3c27a; }
+.ft-links { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.ft-links a { color: #fff8f1; text-decoration: none; transition: color .25s; }
+.ft-links a:hover { color: #f3c27a; }
+.ft-note { color: rgb(255 248 241 / .6); font-size: .88rem; }
+/* copyright line: always fully visible, never covered */
+.ft-bottom { position: relative; z-index: 1; padding-top: 18px; padding-bottom: 22px; border-top: 1px solid rgb(255 255 255 / .1); background: #0a0605; }
+.ft-bottom p { margin: 0; font-size: .85rem; color: rgb(255 248 241 / .6); }

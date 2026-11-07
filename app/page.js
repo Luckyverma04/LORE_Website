@@ -7,6 +7,7 @@ import CategoryCard from "@/components/CategoryCard";
 import Marquee from "@/components/Marquee";
 import HeroVisual from "@/components/HeroVisual";
 import HomeAnimations from "@/components/HomeAnimations";
+import StageGlow from "@/components/StageGlow";
 import StepJourney from "@/components/StepJourney";
 import { WHAT_IS_LORE, CATEGORIES, PLAY_FACTS } from "@/lib/site";
 import { FAQS } from "@/lib/faqs";
@@ -39,7 +40,7 @@ export default function HomePage() {
 
       {/* Hero: H1 + 40–60 word answer + Play button (all in the first screen on mobile) */}
       <section className="hero stage">
-        <div className="stage-bg" aria-hidden="true"><span className="stage-glow" /></div>
+        <div className="stage-bg" aria-hidden="true"><StageGlow /></div>
         <div className="stage-floor" aria-hidden="true" />
         <div className="wrap hero-grid">
           <div className="hero-copy">
