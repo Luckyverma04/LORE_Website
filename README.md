@@ -100,6 +100,15 @@ npm run build
 npm run start
 ```
 
+## 🖼️ Image links
+
+Direct links to every image (for LinkedIn, resume or portfolio):
+
+| Image | Link |
+|---|---|
+| home-desktop | https://raw.githubusercontent.com/Luckyverma04/LORE_Website/main/docs/home-desktop.jpg |
+| home-mobile | https://raw.githubusercontent.com/Luckyverma04/LORE_Website/main/docs/home-mobile.jpg |
+
 ---
 
 <div align="center">
